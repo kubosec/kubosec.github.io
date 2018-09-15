@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>wireshark简单过滤规则 · kubo&#39;s blog.</title>
+    <title>学习飘零大佬的流量分析1 · kubo&#39;s blog.</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >kubo&#39;s blog.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">wireshark简单过滤规则</a>
+                <a href="#" class="post-name">学习飘零大佬的流量分析1</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            wireshark简单过滤规则
+            学习飘零大佬的流量分析1
             <!-- 404 -->
             
         </h1>
@@ -266,7 +266,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">2.5k</span>阅读时长: <span class="post-count reading-time">11 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">833</span>阅读时长: <span class="post-count reading-time">3 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -395,219 +395,41 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>Wireshark 基本语法，基本使用方法，及包过滤规则：</p>
-<h1 id="1-过滤IP，如来源IP或者目标IP等于某个IP"><a href="#1-过滤IP，如来源IP或者目标IP等于某个IP" class="headerlink" title="1.过滤IP，如来源IP或者目标IP等于某个IP"></a><strong>1.过滤IP，如来源IP或者目标IP等于某个IP</strong></h1><p>例子:</p>
-<p>ip.src eq 192.168.1.107 or ip.dst eq 192.168.1.107</p>
-<p>或者</p>
-<p>ip.addr eq 192.168.1.107 // 都能显示来源IP和目标IP</p>
-<p><a href="http://lib.csdn.net/base/linux" title="Linux知识库" target="_blank" rel="noopener">Linux</a>上运行的wireshark图形窗口截图示例，其他过虑规则操作类似，不再截图。</p>
-<p>ip.src eq 10.175.168.182</p>
-<p>截图示例：  </p>
-<p><img src="https://img-blog.csdn.net/20150203183412262?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHpoc2Fu/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
-<p>提示： 在Filter编辑框中，收入过虑规则时，如果语法有误，框会显红色，如正确，会是绿色。</p>
-<h1 id="2-过滤端口"><a href="#2-过滤端口" class="headerlink" title="2.过滤端口"></a>2.过滤端口</h1><p>例子:</p>
-<p>tcp.port eq 80 // 不管端口是来源的还是目标的都显示</p>
-<p>tcp.port == 80</p>
-<p>tcp.port eq 2722</p>
-<p>tcp.port eq 80 or udp.port eq 80</p>
-<p>tcp.dstport == 80 // 只显tcp协议的目标端口80</p>
-<p>tcp.srcport == 80 // 只显tcp协议的来源端口80</p>
-<p>udp.port eq 15000</p>
-<p>过滤端口范围</p>
-<p>tcp.port &gt;= 1 and tcp.port &lt;= 80</p>
-<h1 id="3-过滤协议"><a href="#3-过滤协议" class="headerlink" title="3.过滤协议"></a>3.过滤协议</h1><p>例子:</p>
-<p>tcp</p>
-<p>udp</p>
-<p>arp</p>
-<p>icmp</p>
-<p>http</p>
-<p>smtp</p>
-<p>ftp</p>
-<p>dns</p>
-<p>msnms</p>
-<p>ip</p>
-<p>ssl</p>
-<p>oicq</p>
-<p>bootp</p>
-<p>等等</p>
-<p>排除arp包，如!arp 或者 not arp</p>
-<h1 id="4-过滤MAC"><a href="#4-过滤MAC" class="headerlink" title="4.过滤MAC"></a>4.过滤MAC</h1><p>太以网头过滤</p>
-<p>eth.dst == A0:00:00:04:C5:84 // 过滤目标mac</p>
-<p>eth.src eq A0:00:00:04:C5:84 // 过滤来源mac</p>
-<p>eth.dst==A0:00:00:04:C5:84</p>
-<p>eth.dst==A0-00-00-04-C5-84</p>
-<p>eth.addr eq A0:00:00:04:C5:84 // 过滤来源MAC和目标MAC都等于A0:00:00:04:C5:84的</p>
-<p>less than 小于 &lt; lt</p>
-<p>小于等于 le</p>
-<p>等于 eq</p>
-<p>大于 gt</p>
-<p>大于等于 ge</p>
-<p>不等 ne</p>
-<h1 id="5-包长度过滤"><a href="#5-包长度过滤" class="headerlink" title="5.包长度过滤"></a>5.包长度过滤</h1><p>例子:</p>
-<p>udp.length == 26 这个长度是指udp本身固定长度8加上udp下面那块数据包之和</p>
-<p>tcp.len &gt;= 7 指的是ip数据包(tcp下面那块数据),不包括tcp本身</p>
-<p>ip.len == 94 除了以太网头固定长度14,其它都算是ip.len,即从ip本身到最后</p>
-<p>frame.len == 119 整个数据包长度,从eth开始到最后</p>
-<p>eth —&gt; ip or arp —&gt; tcp or udp —&gt; data</p>
-<h1 id="6-http模式过滤"><a href="#6-http模式过滤" class="headerlink" title="6.http模式过滤"></a>6.http模式过滤</h1><p>例子:</p>
-<p>http.request.method == “GET”</p>
-<p>http.request.method == “POST”</p>
-<p>http.request.uri == “/img/logo-edu.gif”</p>
-<p>http contains “GET”</p>
-<p>http contains “HTTP/1.”</p>
-<p>// GET包</p>
-<p>http.request.method == “GET” &amp;&amp; http contains “Host: “</p>
-<p>http.request.method == “GET” &amp;&amp; http contains “User-Agent: “</p>
-<p>// POST包</p>
-<p>http.request.method == “POST” &amp;&amp; http contains “Host: “</p>
-<p>http.request.method == “POST” &amp;&amp; http contains “User-Agent: “</p>
-<p>// 响应包</p>
-<p>http contains “HTTP/1.1 200 OK” &amp;&amp; http contains “Content-Type: “</p>
-<p>http contains “HTTP/1.0 200 OK” &amp;&amp; http contains “Content-Type: “</p>
-<p>一定包含如下</p>
-<p>Content-Type:</p>
-<p>7.TCP参数过滤</p>
-<p>tcp.flags 显示包含TCP标志的封包。</p>
-<p>tcp.flags.syn == 0x02 显示包含TCP SYN标志的封包。</p>
-<p>tcp.window_size == 0 &amp;&amp; tcp.flags.reset != 1</p>
-<p>8.包内容过滤</p>
-<hr>
-<p>tcp[20]表示从20开始，取1个字符</p>
-<p>tcp[20:]表示从20开始，取1个字符以上</p>
-<p>注： 些两虚线中的内容在我的wireshark（linux）上测试未通过。</p>
-<hr>
-<p>tcp[20:8]表示从20开始，取8个字符</p>
-<p>tcp[offset,n]</p>
-<p>udp[8:3]==81:60:03 // 偏移8个bytes,再取3个数，是否与==后面的数据相等？</p>
-<p>udp[8:1]==32 如果我猜的没有错的话，应该是udp[offset:截取个数]=nValue</p>
-<p>eth.addr[0:3]==00:06:5B</p>
-<p>例子:</p>
-<p>判断upd下面那块数据包前三个是否等于0x20 0x21 0x22</p>
-<p>我们都知道udp固定长度为8</p>
-<p>udp[8:3]==20:21:22</p>
-<p>判断tcp那块数据包前三个是否等于0x20 0x21 0x22</p>
-<p>tcp一般情况下，长度为20,但也有不是20的时候</p>
-<p>tcp[8:3]==20:21:22</p>
-<p>如果想得到最准确的，应该先知道tcp长度</p>
-<p>matches(匹配)和contains(包含某字符串)语法</p>
-<p>ip.src==192.168.1.107 and udp[8:5] matches “\x02\x12\x21\x00\x22″ ——???——–</p>
-<p>ip.src==192.168.1.107 and udp contains 02:12:21:00:22</p>
-<p>ip.src==192.168.1.107 and tcp contains “GET”</p>
-<p>udp contains 7c:7c:7d:7d 匹配payload中含有0x7c7c7d7d的UDP数据包，不一定是从第一字节匹配。</p>
-<p>————————————–不理解Begin————————————————————————————</p>
-<p>例子:</p>
-<p>得到本地qq登陆数据包(判断条件是第一个包==0x02,第四和第五个包等于0x00x22,最后一个包等于0x03)</p>
-<p>0x02 xx xx 0x00 0x22 … 0x03</p>
-<p>如何拼写过虑条件？？？</p>
-<p>udp[11:2]==00:00 表示命令编号为00:00</p>
-<p>udp[11:2]==00:80 表示命令编号为00:80</p>
-<p>当命令编号为00:80时，QQ号码为00:00:00:00</p>
-<p>得到msn登陆成功账号(判断条件是”USR 7 OK “,即前三个等于USR，再通过两个0x20，就到OK,OK后面是一个字符0x20,后面就是mail了)</p>
-<p>USR xx OK <a href="mailto:mail@hotmail.com" target="_blank" rel="noopener">mail@hotmail.com</a></p>
-<p>正确</p>
-<p>msnms and tcp and ip.addr==192.168.1.107 and tcp[20:] matches “^USR\x20[\x30-\x39]+\x20OK\x20[\x00-\xff]+”</p>
-<p>————————————-不理解End—————————————————————————————</p>
-<h1 id="9-dns模式过滤"><a href="#9-dns模式过滤" class="headerlink" title="9.dns模式过滤"></a>9.dns模式过滤</h1><h1 id="10-DHCP"><a href="#10-DHCP" class="headerlink" title="10.DHCP"></a>10.DHCP</h1><p>注意：DHCP协议的检索规则不是dhcp/DHCP， 而是bootp</p>
-<p>以寻找伪造DHCP服务器为例，介绍Wireshark的用法。在显示过滤器中加入过滤规则，</p>
-<p>显示所有非来自DHCP服务器并且bootp.type==0x02（Offer/Ack/NAK）的信息：</p>
-<p>bootp.type==0x02 and not ip.src==192.168.1.1</p>
-<h1 id="11-msn"><a href="#11-msn" class="headerlink" title="11.msn"></a>11.msn</h1><p>msnms &amp;&amp; tcp[23:1] == 20 // 第四个是0x20的msn数据包</p>
-<p>msnms &amp;&amp; tcp[20:1] &gt;= 41 &amp;&amp; tcp[20:1] &lt;= 5A &amp;&amp; tcp[21:1] &gt;= 41 &amp;&amp; tcp[21:1] &lt;= 5A &amp;&amp; tcp[22:1] &gt;= 41 &amp;&amp; tcp[22:1] &lt;= 5A</p>
-<p>msnms &amp;&amp; tcp[20:3]==”USR” // 找到命令编码是USR的数据包</p>
-<p>msnms &amp;&amp; tcp[20:3]==”MSG” // 找到命令编码是MSG的数据包</p>
-<p>tcp.port == 1863 || tcp.port == 80</p>
-<p>如何判断数据包是含有命令编码的MSN数据包?</p>
-<p>1)端口为1863或者80,如:tcp.port == 1863 || tcp.port == 80</p>
-<p>2)数据这段前三个是大写字母,如:</p>
-<p>tcp[20:1] &gt;= 41 &amp;&amp; tcp[20:1] &lt;= 5A &amp;&amp; tcp[21:1] &gt;= 41 &amp;&amp; tcp[21:1] &lt;= 5A &amp;&amp; tcp[22:1] &gt;= 41 &amp;&amp; tcp[22:1] &lt;= 5A</p>
-<p>3)第四个为0x20,如:tcp[23:1] == 20</p>
-<p>4)msn是属于TCP协议的,如tcp</p>
-<p>MSN Messenger 协议分析</p>
-<p><a href="http://blog.csdn.net/Hopping/archive/2008/11/13/3292257.aspx" target="_blank" rel="noopener">http://blog.csdn.net/Hopping/archive/2008/11/13/3292257.aspx</a></p>
-<p>MSN 协议分析</p>
-<p><a href="http://blog.csdn.net/lzyzuixin/archive/2009/03/13/3986597.aspx" target="_blank" rel="noopener">http://blog.csdn.net/lzyzuixin/archive/2009/03/13/3986597.aspx</a></p>
-<p>更详细的说明</p>
-<p>&lt;&lt;wireshark过滤表达式实例介绍&gt;&gt;</p>
-<p><a href="http://www.csna.cn/viewthread.php?tid=14614" target="_blank" rel="noopener">http://www.csna.cn/viewthread.php?tid=14614</a></p>
-<p>Wireshark 主界面的操作菜单中英对比</p>
-<p><a href="http://www.csna.cn/viewthread.php?tid=9645&amp;extra=page=1" target="_blank" rel="noopener">http://www.csna.cn/viewthread.php?tid=9645&amp;extra=page=1</a></p>
-<h1 id="12-wireshark字符串过虑语法字符"><a href="#12-wireshark字符串过虑语法字符" class="headerlink" title="12. wireshark字符串过虑语法字符"></a>12. wireshark字符串过虑语法字符</h1><h1 id="如下内容转自：http-www-csna-cn-viewthread-php-tid-14614"><a href="#如下内容转自：http-www-csna-cn-viewthread-php-tid-14614" class="headerlink" title="如下内容转自：http://www.csna.cn/viewthread.php?tid=14614"></a>如下内容转自：<a href="http://www.csna.cn/viewthread.php?tid=14614" target="_blank" rel="noopener">http://www.csna.cn/viewthread.php?tid=14614</a></h1><p>类似正则表达式的规则。</p>
-<p>1、wireshark基本的语法字符</p>
-<p>\d 0-9的数字</p>
-<p>\D \d的补集（以所以字符为全集，下同），即所有非数字的字符</p>
-<p>\w 单词字符，指大小写字母、0-9的数字、下划线</p>
-<p>\W \w的补集</p>
-<p>\s 空白字符，包括换行符\n、回车符\r、制表符\t、垂直制表符\v、换页符\f</p>
-<p>\S \s的补集</p>
-<p>. 除换行符\n外的任意字符。 在Perl中，“.”可以匹配新行符的模式被称作“单行模式”</p>
-<p>.<em> 匹配任意文本，不包括回车(\n)? 。 而，[0x00-0xff]</em> 匹配任意文本,包括\n</p>
-<p>[…] 匹配[]内所列出的所有字符</p>
-<p>[^…] 匹配非[]内所列出的字符</p>
-<p>—————————————————————————————-</p>
-<p>2、定位字符 所代表的是一个虚的字符，它代表一个位置，你也可以直观地认为“定位字符”所代表的是某个字符与字符间的那个微小间隙。</p>
-<p>^ 表示其后的字符必须位于字符串的开始处</p>
-<p>$ 表示其前面的字符必须位于字符串的结束处</p>
-<p>\b 匹配一个单词的边界</p>
-<p>\B 匹配一个非单词的边界</p>
-<p>—————————————————————————————-</p>
-<p>3、重复描述字符</p>
-<p>{n} 匹配前面的字符n次</p>
-<p>{n,} 匹配前面的字符n次或多于n次</p>
-<p>{n,m} 匹配前面的字符n到m次</p>
-<p>? 匹配前面的字符0或1次</p>
-<ul>
-<li><p>匹配前面的字符1次或多于1次</p>
-</li>
-<li><p>匹配前面的字符0次或式于0次</p>
-</li>
-</ul>
-<p>—————————————————————————————-</p>
-<p>4、and or 匹配</p>
-<p>and 符号 并</p>
-<p>or 符号 或</p>
-<p>例如：</p>
-<p>tcp and tcp.port==80</p>
-<p>tcp or udp</p>
-<p>—————————————————————————————-</p>
-<p>5、wireshark过滤匹配表达式实例</p>
-<p>5.1、搜索按条件过滤udp的数据段payload（数字8是表示udp头部有8个字节，数据部分从第9个字节开始udp[8:]）</p>
-<p>udp[8]==14 (14是十六进制0x14)匹配payload第一个字节0x14的UDP数据包</p>
-<p>udp[8:2]==14:05 可以udp[8:2]==1405，且只支持2个字节连续，三个以上须使用冒号：分隔表示十六进制。 (相当于 udp[8]==14 and udp[9]==05,1405是0x1405)</p>
-<p>udp[8:3]==22:00:f7 但是不可以udp[8:3]==2200f7</p>
-<p>udp[8:4]==00:04:00:2a，匹配payload的前4个字节0x0004002a</p>
-<p>而udp contains 7c:7c:7d:7d 匹配payload中含有0x7c7c7d7d的UDP数据包，不一定是从第一字节匹配。</p>
-<p>udp[8:4] matches “\x14\x05\x07\x18″</p>
-<p>udp[8:] matches “^\x14\x05\x07\x18\x14″</p>
-<p>5.2、搜索按条件过滤tcp的数据段payload（数字20是表示tcp头部有20个字节，数据部分从第21个字节开始tcp[20:]）</p>
-<p>tcp[20:] matches “^GET [ -~]*HTTP/1.1\x0d\x0a”</p>
-<p>等同http matches “^GET [ -~]*HTTP/1.1\x0d\x0a”</p>
-<p>tcp[20:] matches “^GET (.*?)HTTP/1.1\x0d\x0a”</p>
-<p>tcp[20:] matches “^GET (.<em>?)HTTP/1.1\x0d\x0a[\x00-\xff]</em>Host: (.<em>?)pplive(.</em>?)\x0d\x0a”</p>
-<p>tcp[20:] matches “^GET (.<em>?)HTTP/1.1\x0d\x0a[\x00-\xff]</em>Host: “</p>
-<p>tcp[20:] matches “^POST / HTTP/1.1\x0d\x0a[\x00-\xff]*\x0d\x0aConnection: Keep-Alive\x0d\x0a\x0d\x0a”</p>
-<p>检测SMB头的smb标记，指明smb标记从tcp头部第24byte的位置开始匹配。</p>
-<p>tcp[24:4] == ff:53:4d:42</p>
-<p>检测SMB头的smb标记，tcp的数据包含十六进制ff:53:4d:42，从tcp头部开始搜索此数据。</p>
-<p>tcp contains ff:53:4d:42</p>
-<p>tcp matches “\xff\x53\x4d\x42″</p>
-<p>检测tcp含有十六进制01:bd,从tcp头部开始搜索此数据。</p>
-<p>tcp matches “\x01\xbd”</p>
-<p>检测MS08067的RPC请求路径</p>
-<p>tcp[179:13] == 00:5c:00:2e:00:2e:00:5c:00:2e:00:2e:00</p>
-<p>\ . . \ . .</p>
-<p>5.3、其他</p>
-<p>http.request.uri matches “.gif$” 匹配过滤HTTP的请求URI中含有”.gif”字符串，并且以.gif结尾（4个字节）的http请求数据包（$是正则表达式中的结尾表示符）</p>
-<p>注意区别：http.request.uri contains “.gif$” 与此不同，contains是包含字符串”.gif$”（5个字节）。匹配过滤HTTP的请求URI中含有”.gif$”字符串的http请求数据包（这里$是字符，不是结尾符）</p>
-<p>eth.addr[0:3]==00:1e:4f 搜索过滤MAC地址前3个字节是0x001e4f的数据包。</p>
+        <h2 id="流量分析——CTF实战（初级）"><a href="#流量分析——CTF实战（初级）" class="headerlink" title="流量分析——CTF实战（初级）"></a>流量分析——CTF实战（初级）</h2><p><strong>学习飘零大佬ing</strong><br>学习思路：先看大佬的解题思路并复现，在此过程中学习wireshark的常用过滤。之后，做题提升。<br>将tcp流数据转换成文件代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">function str2bin($hexdata)</span><br><span class="line">    &#123;</span><br><span class="line">        $bindata=&quot;&quot;;</span><br><span class="line">        for ($i=0;$i &lt; strlen($hexdata);$i+=2) &#123;</span><br><span class="line">            $bindata.=chr(hexdec(substr($hexdata,$i,2)));</span><br><span class="line">        &#125;</span><br><span class="line">        return $bindata;</span><br><span class="line">    &#125;</span><br><span class="line">$a = file_get_contents(&quot;./1.txt&quot;);</span><br><span class="line">$a = $a;</span><br><span class="line">$b = str2bin($a);</span><br><span class="line">file_put_contents(&quot;./1.png&quot;,$b);</span><br></pre></td></tr></table></figure>
+<p>http contains “dir”<br>http.request.method==POST</p>
+<p>铁三流量分析 2018.5.5（此次是对铁三流量分析题的复现）</p>
+<p>题目描述</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1.黑客攻击的第一个受害主机的网卡IP地址  192.168.1.8</span><br><span class="line">2.黑客对URL的哪一个参数实施了SQL注入   list[select]</span><br><span class="line">3.第一个受害主机网站数据库的表前缀(加上下划线 例如abc_)  ajtuc_</span><br><span class="line">4.第一个受害主机网站数据库的名字	joomla</span><br><span class="line">5.Joomla后台管理员的密码是多少		$2y$10$lXujU7XaUviJDigFMzKy6.wx7EMCBqpzrJdn7zi/8B2QRD7qIlDJe	</span><br><span class="line">6.黑客第一次获得的php木马的密码是什么	zzz</span><br><span class="line">7.黑客第二次上传php木马是什么时间	17:20:44.248365</span><br><span class="line">8.第二次上传的木马通过HTTP协议中的哪个头传递数据	HTTP_REFERER、HTTP_ACCEPT_LANGUAGE</span><br><span class="line">9.内网主机的mysql用户名和请求连接的密码hash是多少(用户:密码hash)  admin:1a:30:68:c3:e2:9e:03:e3:bc:fd:ba:6f:86:69:ad:23:34:9d:c6:c4</span><br><span class="line">10.php代理第一次被使用时最先连接了哪个IP地址	4.2.2.2</span><br><span class="line">11.黑客第一次获取到当前目录下的文件列表的漏洞利用请求发生在什么时候	18:36:59.770782 </span><br><span class="line">12.黑客在内网主机中添加的用户名和密码是多少	kaka kaka</span><br><span class="line">13.黑客从内网服务器中下载下来的文件名		lsass.exe_180208_185247.dmp</span><br></pre></td></tr></table></figure>
+<p><strong>第一个数据包</strong></p>
+<p>先过滤http协议，发现攻击目标。</p>
+<p><img src="/images/3.png" alt="想输入的提示名字，可不输入"></p>
+<p>解码得</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">index.php?option=com_contenthistory&amp;view=history&amp;list[ordering]=&amp;item_id=1&amp;type_id=1&amp;list[select]=() AND (SELECT 2*(IF((SELECT * FROM (SELECT CONCAT(0x71717a7671,(SELECT (ELT(1188=1188,1))),0x71716b6b71,0x78))s), 8446744073709551610, 8446744073709551610)))-- gQsZ</span><br></pre></td></tr></table></figure>
+<p>明显是sql注入攻击，故第一个受害主机的网卡IP地址为 192.168.1.8，黑客对URL的list[select]参数进行注入，<br>已知目的ip即可进行过滤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(ip.addr==192.168.1.8||ip.addr==202.1.1.2)&amp;&amp;http</span><br></pre></td></tr></table></figure>
+<p>选择一条注入信息，追踪tcp流发现如下报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Error: 500 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near &amp;#039;uc.name AS editor</span><br><span class="line"></span><br><span class="line">FROM `ajtuc_ucm_history` AS h</span><br><span class="line"></span><br><span class="line">LEFT JOIN ajtuc_users AS uc ON u&amp;#039; at line 1 SQL=SELECT (,uc.name AS editor</span><br><span class="line"></span><br><span class="line">FROM `ajtuc_ucm_history` AS h</span><br><span class="line"></span><br><span class="line">LEFT JOIN ajtuc_users AS uc ON uc.id = h.editor_user_id</span><br><span class="line"></span><br><span class="line">WHERE `h`.`ucm_item_id` = 1 AND `h`.`ucm_type_id` = 1</span><br><span class="line"></span><br><span class="line">ORDER BY `h`.`save_date`</span><br></pre></td></tr></table></figure>
+<p>可以得知受害主机网站数据库的表前缀为ajtuc_<br>同样过滤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(ip.addr==192.168.1.8||ip.addr==202.1.1.2)&amp;&amp;http</span><br></pre></td></tr></table></figure>
+<p>向下翻找在</p>
+<p><img src="/images/4.png" alt="想输入的提示名字，可不输入"></p>
+<p>SQL注入的报错回显中，得到如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;title&gt;Error: 500 XPATH syntax error: &amp;#039;qqzvq1qqkkq&amp;#039; SQL=SELECT (UPDATEXML(5733,CONCAT(0x2e,0x71717a7671,(SELECT MID((IFNULL(CAST(sendEmail AS CHAR),0x20)),1,22) FROM joomla.ajtuc_users ORDER BY id LIMIT 0,1),0x71716b6b71),6657)),uc.name AS editor</span><br></pre></td></tr></table></figure>
+<p>可知数据库为joomla<br>对数据包进行如下过滤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(ip.addr==192.168.1.8||ip.addr==202.1.1.2)&amp;&amp;(http contains password)&amp;&amp;(http.request.method==POST)</span><br></pre></td></tr></table></figure>
+<p>得到两个用户名、密码但好像都不对</p>
+<p><img src="/images/1.png" alt="想输入的提示名字，可不输入"></p>
+<p><img src="/images/2.png" alt="想输入的提示名字，可不输入"></p>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="http://yoursite.com">John Doe</a>
-            <p>原文链接：<a href="http://yoursite.com/2018/09/15/wireshark简单过滤规则/">http://yoursite.com/2018/09/15/wireshark简单过滤规则/</a>
-            <p>发表日期：<a href="http://yoursite.com/2018/09/15/wireshark简单过滤规则/">September 15th 2018, 3:47:06 pm</a>
-            <p>更新日期：<a href="http://yoursite.com/2018/09/15/wireshark简单过滤规则/">September 15th 2018, 3:47:06 pm</a>
+            <p>原文链接：<a href="http://yoursite.com/2018/09/15/学习飘零大佬的流量分析1/">http://yoursite.com/2018/09/15/学习飘零大佬的流量分析1/</a>
+            <p>发表日期：<a href="http://yoursite.com/2018/09/15/学习飘零大佬的流量分析1/">September 15th 2018, 3:55:00 pm</a>
+            <p>更新日期：<a href="http://yoursite.com/2018/09/15/学习飘零大佬的流量分析1/">September 15th 2018, 4:29:10 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -615,17 +437,12 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/09/15/sql-bypass-1/" title= "sql-bypass">
-                    <div class="nextTitle">sql-bypass</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/09/15/thinkphp代码审计/" title= "thinkphp代码审计">
-                    <div class="prevTitle">thinkphp代码审计</div>
+                <a href= "/2018/09/15/sql-bypass-1/" title= "sql-bypass">
+                    <div class="prevTitle">sql-bypass</div>
                 </a>
             
         </li>
@@ -744,7 +561,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-过滤IP，如来源IP或者目标IP等于某个IP"><span class="toc-number">1.</span> <span class="toc-text">1.过滤IP，如来源IP或者目标IP等于某个IP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-过滤端口"><span class="toc-number">2.</span> <span class="toc-text">2.过滤端口</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-过滤协议"><span class="toc-number">3.</span> <span class="toc-text">3.过滤协议</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-过滤MAC"><span class="toc-number">4.</span> <span class="toc-text">4.过滤MAC</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-包长度过滤"><span class="toc-number">5.</span> <span class="toc-text">5.包长度过滤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-http模式过滤"><span class="toc-number">6.</span> <span class="toc-text">6.http模式过滤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-dns模式过滤"><span class="toc-number">7.</span> <span class="toc-text">9.dns模式过滤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-DHCP"><span class="toc-number">8.</span> <span class="toc-text">10.DHCP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-msn"><span class="toc-number">9.</span> <span class="toc-text">11.msn</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-wireshark字符串过虑语法字符"><span class="toc-number">10.</span> <span class="toc-text">12. wireshark字符串过虑语法字符</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#如下内容转自：http-www-csna-cn-viewthread-php-tid-14614"><span class="toc-number">11.</span> <span class="toc-text">如下内容转自：http://www.csna.cn/viewthread.php?tid=14614</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#流量分析——CTF实战（初级）"><span class="toc-number">1.</span> <span class="toc-text">流量分析——CTF实战（初级）</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

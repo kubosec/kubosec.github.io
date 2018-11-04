@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="kubo">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="kubo">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>安恒十月月赛 · kubo&#39;s blog.</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/favicon.ico" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >kubo&#39;s blog.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">安恒十月月赛</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>kubo's blog.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            安恒十月月赛
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">1.1k</span>阅读时长: <span class="post-count reading-time">5 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2018/11/04</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p>赛后看了一下题目，很有趣。</p>
+<h2 id="MISC"><a href="#MISC" class="headerlink" title="MISC"></a>MISC</h2><h3 id="未知流量"><a href="#未知流量" class="headerlink" title="未知流量"></a>未知流量</h3><p>得到两个无后缀名的文件，放进winhex查看，显示wireshark字样，用wireshark打开</p>
+<p>在第二个文件中发现大量USBMS数据，找到最大的数据包</p>
+<p><img src="\images\1540864717198.png" alt="1540864717198"></p>
+<p>显示分组字节，看到CLIENT_RANDOM字样，另存为ssl.log</p>
+<p>打开第一个文件，过滤ssl，找到一个TLS数据包，添加解密文件ssl.log</p>
+<p><img src="\images\1540864874366.png" alt="1540864874366"></p>
+<p>可以看到多了几个解密后的http流量，在其中发现flag</p>
+<h3 id="just-do-it"><a href="#just-do-it" class="headerlink" title="just do it"></a>just do it</h3><p>打开看到两个文件</p>
+<p><img src="\images\1540865027197.png" alt="1540865027197"></p>
+<p>winhex打开example发现文件头：03F30D0A是pyc类型，使用工具反编译</p>
+<p><img src="\images\1540865125182.png" alt="1540865125182"></p>
+<p>得到py脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> flag</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate</span><span class="params">(flag, key, ran)</span>:</span></span><br><span class="line">    res = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(flag)):</span><br><span class="line">        res.append((ord(flag[i]) ^ key[i]) % ran)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    ran = random.randint(<span class="number">99</span>, <span class="number">109</span>)<span class="comment"># 99~109   101~109</span></span><br><span class="line">    <span class="keyword">print</span> ran</span><br><span class="line">    real_flag = flag.flag</span><br><span class="line">    key = [<span class="number">151</span>,</span><br><span class="line">     <span class="number">157</span>,</span><br><span class="line">     <span class="number">163</span>,</span><br><span class="line">     <span class="number">167</span>,</span><br><span class="line">     <span class="number">173</span>,</span><br><span class="line">     <span class="number">179</span>,</span><br><span class="line">     <span class="number">181</span>,</span><br><span class="line">     <span class="number">191</span>,</span><br><span class="line">     <span class="number">193</span>,</span><br><span class="line">     <span class="number">197</span>,</span><br><span class="line">     <span class="number">199</span>,</span><br><span class="line">     <span class="number">211</span>,</span><br><span class="line">     <span class="number">223</span>,</span><br><span class="line">     <span class="number">227</span>,</span><br><span class="line">     <span class="number">229</span>,</span><br><span class="line">     <span class="number">233</span>,</span><br><span class="line">     <span class="number">239</span>,</span><br><span class="line">     <span class="number">241</span>,</span><br><span class="line">     <span class="number">251</span>,</span><br><span class="line">     <span class="number">257</span>,</span><br><span class="line">     <span class="number">263</span>,</span><br><span class="line">     <span class="number">269</span>,</span><br><span class="line">     <span class="number">271</span>,</span><br><span class="line">     <span class="number">277</span>,</span><br><span class="line">     <span class="number">281</span>,</span><br><span class="line">     <span class="number">283</span>,</span><br><span class="line">     <span class="number">293</span>,</span><br><span class="line">     <span class="number">307</span>,</span><br><span class="line">     <span class="number">311</span>,</span><br><span class="line">     <span class="number">313</span>,</span><br><span class="line">     <span class="number">317</span>,</span><br><span class="line">     <span class="number">331</span>,</span><br><span class="line">     <span class="number">337</span>,</span><br><span class="line">     <span class="number">347</span>,</span><br><span class="line">     <span class="number">349</span>,</span><br><span class="line">     <span class="number">353</span>,</span><br><span class="line">     <span class="number">359</span>,</span><br><span class="line">     <span class="number">367</span>]</span><br><span class="line">    <span class="keyword">print</span> generate(real_flag, key, ran)</span><br><span class="line">    generate(real_flag, key, ran)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>同时查看第二个文件，base64解密得</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res:[33, 33, 90, 88, 6, 27, 36, 11, 59, 33, 47, 74, 28, 26, 6,</span><br><span class="line"> 0, 15, 40, 100, 98, 96, 3, 52, 87, 94, 89, 65, 50, 51, 48, 38, 67, 100, 54, 45, 33, 39, 66]</span><br></pre></td></tr></table></figure>
+<p>然后分析解密脚本</p>
+<blockquote>
+<p>flag范围  ： 最小值为’0’  ASCII 48  二进制   110000   最大值 } ASCII 125  二进制  1111101<br>key范围  ： 最小值 151                  二进制 10010111 最大值    367                二进制  101101111</p>
+<p>所以             (flag[i]) ^ key[i])异或最大值 11111111   511  最小值  111111   63<br>故ran范围：101~110     </p>
+<p>商范围：0~6</p>
+</blockquote>
+<p>得到脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decode</span><span class="params">(key,ran)</span>:</span></span><br><span class="line">	flag = <span class="string">""</span></span><br><span class="line">	res = [<span class="number">33</span>, <span class="number">33</span>, <span class="number">90</span>, <span class="number">88</span>, <span class="number">6</span>, <span class="number">27</span>, <span class="number">36</span>, <span class="number">11</span>, <span class="number">59</span>, <span class="number">33</span>, <span class="number">47</span>, <span class="number">74</span>, <span class="number">28</span>, <span class="number">26</span>, <span class="number">6</span>, <span class="number">0</span>, <span class="number">15</span>, <span class="number">40</span>, <span class="number">100</span>, <span class="number">98</span>, <span class="number">96</span>, <span class="number">3</span>, <span class="number">52</span>, <span class="number">87</span>, <span class="number">94</span>, <span class="number">89</span>, <span class="number">65</span>, <span class="number">50</span>, <span class="number">51</span>, <span class="number">48</span>, <span class="number">38</span>, <span class="number">67</span>, <span class="number">100</span>, <span class="number">54</span>, <span class="number">45</span>, <span class="number">33</span>, <span class="number">39</span>, <span class="number">66</span>]</span><br><span class="line">	num = range(<span class="number">1</span>,<span class="number">6</span>)</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> num:</span><br><span class="line">		<span class="keyword">for</span> j <span class="keyword">in</span> range(len(key)):</span><br><span class="line">			x = (i*ran + res[j])^key[j]</span><br><span class="line">			<span class="keyword">if</span>((x&gt;=<span class="number">48</span> <span class="keyword">and</span> x&lt;=<span class="number">57</span>) <span class="keyword">or</span> (x&gt;=<span class="number">97</span> <span class="keyword">and</span> x&lt;=<span class="number">125</span>)):</span><br><span class="line">				flag += chr(x)</span><br><span class="line">			<span class="keyword">else</span>:</span><br><span class="line">				flag += <span class="string">" "</span></span><br><span class="line">			print(flag)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">	key = [<span class="number">151</span>,<span class="number">157</span>,<span class="number">163</span>,<span class="number">167</span>,<span class="number">173</span>,<span class="number">179</span>,<span class="number">181</span>,<span class="number">191</span>,<span class="number">193</span>,<span class="number">197</span>,<span class="number">199</span>,<span class="number">211</span>,<span class="number">223</span>,<span class="number">227</span>,<span class="number">229</span>,<span class="number">233</span>,<span class="number">239</span>,<span class="number">241</span>,<span class="number">251</span>,<span class="number">257</span>,<span class="number">263</span>,<span class="number">269</span>,<span class="number">271</span>,<span class="number">277</span>,<span class="number">281</span>,<span class="number">283</span>,<span class="number">293</span>,<span class="number">307</span>,<span class="number">311</span>,<span class="number">313</span>,<span class="number">317</span>,<span class="number">331</span>,<span class="number">337</span>,<span class="number">347</span>,<span class="number">349</span>,<span class="number">353</span>,<span class="number">359</span>,<span class="number">367</span>]</span><br><span class="line">	ran = range(<span class="number">101</span>,<span class="number">110</span>)</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> ran:</span><br><span class="line">		decode(key,i)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<p>得到flag</p>
+<p><img src="\images\1540865503199.png" alt="1540865503199"></p>
+<p>整理一下得</p>
+<blockquote>
+<p>fl  {  d 48 3 390  37  2724149  e    }<br>  ag 09 b  a a   a7<br>                     6c       c0 5888</p>
+<p>flag{09db48a3a390a7376c2724149c0e5888}</p>
+</blockquote>
+<h2 id="CRYPTO"><a href="#CRYPTO" class="headerlink" title="CRYPTO"></a>CRYPTO</h2><h3 id="ordinary-keyboard"><a href="#ordinary-keyboard" class="headerlink" title="ordinary keyboard"></a>ordinary keyboard</h3><p>打开看到这样</p>
+<p><img src="\images\1540866241676.png" alt="1540866241676"></p>
+<p>加密原理：</p>
+<p>键盘每个字符转换成其左上边的字符对应ASCII表的下一个字符。</p>
+<p><img src="\images\1540866386937.png" alt="1540866386937"></p>
+<p>例：</p>
+<p>原文为i 其对应键盘左上角字符为*，对应ASCII表中下个字符为+，所以i加密为+</p>
+<p><img src="\images\1540866538029.png" alt="1540866538029"></p>
+<p>编写脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decode</span><span class="params">(str_flag)</span>:</span></span><br><span class="line">	str1 = <span class="string">"asdfghjkl;qwertyuiop!@#$%^&amp;*()-+"</span></span><br><span class="line">	str2 = <span class="string">"zxcvbnm,./asdfghjkl;qwertyuiop&#123;&#125;"</span></span><br><span class="line">	str = dict(zip(str1,str2))</span><br><span class="line">	print(str)</span><br><span class="line">	flag =<span class="string">""</span></span><br><span class="line">	num = <span class="string">"0123456789"</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> str_flag:</span><br><span class="line">		<span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> num:</span><br><span class="line">			<span class="comment">#print(i)</span></span><br><span class="line">			a =chr(ord(i)<span class="number">-1</span>)</span><br><span class="line">			<span class="comment">#print(a)</span></span><br><span class="line">			<span class="comment">#print(str[a])</span></span><br><span class="line">			flag += str[a]</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			flag += i</span><br><span class="line">	print(flag)</span><br><span class="line">str_flag = <span class="string">"spru.r5sf3h7660h7394e169699hffe0s0h$4,"</span></span><br><span class="line">decode(str_flag)</span><br></pre></td></tr></table></figure>
+<h3 id="四四方方一座城（提交你找到的字符串的MD5值）"><a href="#四四方方一座城（提交你找到的字符串的MD5值）" class="headerlink" title="四四方方一座城（提交你找到的字符串的MD5值）"></a>四四方方一座城（提交你找到的字符串的MD5值）</h3><p>得到加密脚本，但加密的密匙enc_key又加密了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flag <span class="keyword">import</span> FLAG,key1,key2,Offset</span><br><span class="line"><span class="keyword">from</span> enc <span class="keyword">import</span> encrypt</span><br><span class="line"></span><br><span class="line">ciphertext = encrypt(FLAG)</span><br><span class="line">enc_key1 = enc_key2 = <span class="string">""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> key1:</span><br><span class="line">	enc_key1 += chr((ord(i) ^ <span class="number">0xff</span> &amp; <span class="number">0xaf</span>) + Offset)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> key2:</span><br><span class="line">	enc_key2 += chr((ord(i) ^ <span class="number">0xff</span> &amp; <span class="number">0xaf</span>) + Offset)</span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> enc_key1</span><br><span class="line"><span class="keyword">print</span> enc_key2</span><br><span class="line"></span><br><span class="line"><span class="comment">#ciphertext:XBBSPASGXRAEUIOHPZ</span></span><br><span class="line"><span class="comment">#enc_key1:VXYjj</span></span><br><span class="line"><span class="comment">#enc_key2:NQLOUVXab</span></span><br></pre></td></tr></table></figure>
+<p>接下来就是分析脚本，编写脚本得到密匙enc_key。</p>
+<p>容易看出，加密算法未知，唯一已知的是enc_key加密方式，分析enc_key：</p>
+<blockquote>
+<p>i 的范围为 ：65~122</p>
+<p>ord(i) ^ 0xff &amp; 0xaf 范围为：192~255</p>
+<p>enc_key为大小写字符集合故其范围为：76~106</p>
+<p>故offset一定为负数，暂定范围为：-179~-86 ，遍历得到offset取值为</p>
+<p>[-152, -150, -149, -132, -160, -157, -162, -159, -153, -141, -140]</p>
+</blockquote>
+<p>写解密脚本得：</p>
+<p><img src="\images\1540902626572.png" alt="1540902626572"></p>
+<p><strong>附录</strong></p>
+<p>判断ord(i) ^ 0xff &amp; 0xaf 与enc_key取值范围脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tmp = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">65</span>,<span class="number">122</span>):</span><br><span class="line">	tmp.append(i ^ <span class="number">0xff</span> &amp; <span class="number">0xaf</span>)</span><br><span class="line">print(max(tmp),min(tmp))</span><br><span class="line">str =<span class="string">'VXYjjNQLOUVXab'</span> </span><br><span class="line">key = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> str:</span><br><span class="line">	key.append(i)</span><br><span class="line">print(ord(max(key)),ord(min(key)))</span><br></pre></td></tr></table></figure>
+<p>判断Offset取值范围脚本:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Offset = <span class="number">0</span></span><br><span class="line">flag = []</span><br><span class="line">num1 = []</span><br><span class="line">num2 = <span class="string">'VXYjjNQLOUVXab'</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">65</span>,<span class="number">122</span>):</span><br><span class="line">	num1.append(i ^ <span class="number">0xff</span> &amp; <span class="number">0xaf</span>)</span><br><span class="line"><span class="comment">#print(num1)</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(num1)):</span><br><span class="line">	<span class="comment">#print(num2[i])</span></span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> num2:</span><br><span class="line">		Offset = ord(j) - num1[i]</span><br><span class="line">		<span class="comment">#print(Offset)</span></span><br><span class="line">		<span class="keyword">if</span>(Offset &gt; <span class="number">-179</span> &amp; Offset &lt; <span class="number">-86</span>):</span><br><span class="line">			flag.append(Offset)</span><br><span class="line">			<span class="comment">#print(Offset)</span></span><br><span class="line">	print(flag)</span><br></pre></td></tr></table></figure>
+<p>解密得到key1，key2脚本为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">enc_key1 = <span class="string">'VXYjj'</span></span><br><span class="line">enc_key2 = <span class="string">'NQLOUVXab'</span></span><br><span class="line">key1 = <span class="string">''</span></span><br><span class="line">key2 = <span class="string">''</span></span><br><span class="line">Offset = [<span class="number">-152</span>, <span class="number">-150</span>, <span class="number">-149</span>, <span class="number">-132</span>, <span class="number">-160</span>, <span class="number">-157</span>, <span class="number">-162</span>, <span class="number">-159</span>, <span class="number">-153</span>, <span class="number">-141</span>, <span class="number">-140</span>]</span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range(len(Offset)):</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> enc_key1:</span><br><span class="line">		key1 += chr((ord(i) - Offset[j]) ^ <span class="number">0xff</span> &amp; <span class="number">0xaf</span>)</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> enc_key2:</span><br><span class="line">		key2 += chr((ord(i) - Offset[j]) ^ <span class="number">0xff</span> &amp; <span class="number">0xaf</span>)</span><br><span class="line">	print(key1[:<span class="number">5</span>]+<span class="string">'\n'</span>+key2[:<span class="number">9</span>])</span><br><span class="line">	key1 = <span class="string">''</span></span><br><span class="line">	key2 = <span class="string">''</span></span><br><span class="line">	print(<span class="string">'\n'</span>)</span><br></pre></td></tr></table></figure>
+<p>key1、key2分别为:DBAPP、LINKEDBYX</p>
+<p>四方加密在线解密链接：<a href="https://www.geocachingtoolbox.com/index.php?lang=en&amp;page=fourSquareCipher" target="_blank" rel="noopener">https://www.geocachingtoolbox.com/index.php?lang=en&amp;page=fourSquareCipher</a></p>
+<p><img src="\images\1540904882169.png" alt="1540904882169"></p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://www.lybsec.top">kubo</a>
+            <p>原文链接：<a href="http://www.lybsec.top/2018/11/04/安恒十月月赛/">http://www.lybsec.top/2018/11/04/安恒十月月赛/</a>
+            <p>发表日期：<a href="http://www.lybsec.top/2018/11/04/安恒十月月赛/">November 4th 2018, 2:58:15 pm</a>
+            <p>更新日期：<a href="http://www.lybsec.top/2018/11/04/安恒十月月赛/">November 4th 2018, 3:01:52 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/10/28/恒一周年-一道杂项题/" title= "安恒一周年-一道杂项题">
+                    <div class="prevTitle">安恒一周年-一道杂项题</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:2434654979@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/kubosec" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MISC"><span class="toc-number">1.</span> <span class="toc-text">MISC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#未知流量"><span class="toc-number">1.1.</span> <span class="toc-text">未知流量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#just-do-it"><span class="toc-number">1.2.</span> <span class="toc-text">just do it</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CRYPTO"><span class="toc-number">2.</span> <span class="toc-text">CRYPTO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ordinary-keyboard"><span class="toc-number">2.1.</span> <span class="toc-text">ordinary keyboard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四四方方一座城（提交你找到的字符串的MD5值）"><span class="toc-number">2.2.</span> <span class="toc-text">四四方方一座城（提交你找到的字符串的MD5值）</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 19
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span><a class="archive-post-title" href= "/2018/11/04/安恒十月月赛/" >安恒十月月赛</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/28</span><a class="archive-post-title" href= "/2018/10/28/恒一周年-一道杂项题/" >安恒一周年-一道杂项题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/-课程设计/" >C#课程设计</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/何在渗透测试中划水/" >如何在渗透测试中划水</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/25</span><a class="archive-post-title" href= "/2018/10/25/iscc信阳杯-一切的根源32/" >iscc信阳杯-一切的根源32</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/17</span><a class="archive-post-title" href= "/2018/10/17/思/" >反思</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/7月月赛/" >安恒7月月赛</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/arvisoj-web/" >jarvisoj-web</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/ve-2018-14421-seacms漏洞/" >cve-2018-14421_seacms漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/一次内网渗透过程/" >一次渗透测试过程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/安恒9月月赛/" >安恒9月月赛</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/TFd环境搭建/" >CTFd环境搭建</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2018/09/20/我认识/" >自我认识</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/16</span><a class="archive-post-title" href= "/2018/09/16/鼎杯fakebook/" >网鼎杯fakebook</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/wireshark简单过滤规则/" >wireshark简单过滤规则</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/thinkphp代码审计/" >thinkphp代码审计</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/sql-bypass-1/" >sql-bypass</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/12</span><a class="archive-post-title" href= "/2018/09/12/linux入门学习/" >linux入门学习</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "kubo"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

@@ -359,6 +359,84 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2018/11/19/海CTF（持续更新）/" >
+            
+                <span>上海CTF（持续更新）</span>
+        </a>
+        <div class="abstract-content">
+            web1filter_var() 绕过12345678910111213141516&lt;?php   $url = $_GET['url'];   echo "Argument: ".$url."\n";   if(filter_var($url, FILTER_VALIDATE_URL)) &#123;      $r = parse_url($url);      var_dump($r);      if(preg_match('/skysec\.top$/', $r['host']))       &#123;         exec('curl -v -s "'.$r['...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/11/19</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/11/19/CTF-持续更新/" >
+            
+                <span>HCTF(持续更新)</span>
+        </a>
+        <div class="abstract-content">
+            HCTFHCTF是真的难，自己太菜了，没得玩。
+Warmup其中一道简单的web题，
+打开是如下界面
+
+点击提示，看到
+
+注意到file=hint.php,有可能存在文件包含漏洞。
+然后，御剑发现源码，source.php
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748&lt;?php    class emmm    &#123;        public static function checkFile(&amp;$page)        &#123;...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/11/19</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2018/11/19/件格式（png、zip持续更新）/" >
+            
+                <span>文件格式（png、zip持续更新）</span>
+        </a>
+        <div class="abstract-content">
+            png图片格式爆破crc校验所需要了解到的PNG文件头知识
+123456789- （固定）八个字节89 50 4E 47 0D 0A 1A 0A为png的文件头- （固定）四个字节00 00 00 0D（即为十进制的13）代表数据块的长度为13- （固定）四个字节49 48 44 52（即为ASCII码的IHDR）是文件头数据块的标示（IDCH）- （可变）13位数据块（IHDR)    - 前四个字节代表该图片的宽    - 后四个字节代表该图片的高    - 后五个字节依次为：    Bit depth、ColorType、Compression method、Filter meth...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/11/19</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2018/11/04/安恒十月月赛/" >
             
                 <span>安恒十月月赛</span>
@@ -566,118 +644,10 @@ Login头信息中有提示
         </div>
     </article>
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/14/ve-2018-14421-seacms漏洞/" >
-            
-                <span>cve-2018-14421_seacms漏洞</span>
-        </a>
-        <div class="abstract-content">
-            CVE-2018-144211九月安恒月赛web1用到此漏洞，本次笔记就参考web1做第一个cve漏洞。
-靶机环境：海洋cms6.61     PHP5.x或PHP7.0.x (不支持php7.1,推荐使用php5.6版本，php7.*版本可能会出现500报错)            
-实验环境：chrome+phpstrom+xdebug代码调试环境
-参考链接：https://www.anquanke.com/post/id/152764
-1http://hexo.imagemlt.xyz/post/seacms-backend-getshell/index.html
-漏洞利用cms搭...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/14</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/10/14/7月月赛/" >
-            
-                <span>安恒7月月赛</span>
-        </a>
-        <div class="abstract-content">
-            1此次月赛并没有参加，以下只对需要做笔记的题记下复现过程。
-就这么直接
-解题
-我们看源码
-
-找到hint.php，访问它
-
-可以看到它的验证的源码
-这里提及一个知识点
-
-类Unix下生成随机数的生命周期是以秒为单位的
-
-我们随机提交一个md5值，显示
-
-查看源码
-
-给了一段md5值
-编写脚本
-123456789101112# python 2import requests from hashlib import *import reurl = 'xxxx/flag.php'data = dict(answer = md5('1').hexdigest())html = requests....
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/14</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/09/23/安恒9月月赛/" >
-            
-                <span>安恒9月月赛</span>
-        </a>
-        <div class="abstract-content">
-            一月一次的安恒月赛又开始了、、、
-misc2
-下载之后是张png图片
-
-修改尺寸后，看到
-
-猜想是压缩包密码，binwalk原图片果然得到压缩包，输入密码解密后，得到Ditf.pcapng文件，
-分析一波
-http过滤，在最后看到一个kiss.png图片
-
-追踪tcp流，提取图片
-
-分析一波图片，没得到东西
-在看kiss.png上面的一条数据，发现一串base64代码
-
-解码得 flag{Oz_4nd_Hir0_lov3_For3ver}未完待续、、、
-
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/09/23</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
     <!-- paginator  -->
     
     <nav class="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">NEXT &#62;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">NEXT &#62;</a>
     </nav>
     
 </main>
@@ -1101,9 +1071,48 @@ http过滤，在最后看到一个kiss.png图片
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 19
+        Total : 22
         </div>
         <!-- search  -->
         
@@ -1116,6 +1125,21 @@ http过滤，在最后看到一个kiss.png图片
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/件格式（png、zip持续更新）/" >文件格式（png、zip持续更新）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/海CTF（持续更新）/" >上海CTF（持续更新）</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1154,12 +1178,17 @@ http过滤，在最后看到一个kiss.png图片
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/ve-2018-14421-seacms漏洞/" >cve-2018-14421_seacms漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/arvisoj-web/" >jarvisoj-web</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/ve-2018-14421-seacms漏洞/" >cve-2018-14421_seacms漏洞</a>
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/TFd环境搭建/" >CTFd环境搭建</a>
         </li>
     
     
@@ -1174,11 +1203,6 @@ http过滤，在最后看到一个kiss.png图片
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/TFd环境搭建/" >CTFd环境搭建</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2018/09/20/我认识/" >自我认识</a>
         </li>
     
@@ -1189,7 +1213,7 @@ http过滤，在最后看到一个kiss.png图片
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/wireshark简单过滤规则/" >wireshark简单过滤规则</a>
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
         </li>
     
     
@@ -1199,7 +1223,7 @@ http过滤，在最后看到一个kiss.png图片
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/wireshark简单过滤规则/" >wireshark简单过滤规则</a>
         </li>
     
     

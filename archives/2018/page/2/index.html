@@ -346,6 +346,46 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/14/arvisoj-web/" >
+            
+                <span>jarvisoj-web</span>
+        </a>
+        <div class="abstract-content">
+            网址：https://www.jarvisoj.com
+PORT51在vps上用curl命令
+
+LOCALHOST
+访问即可
+Login头信息中有提示
+
+参考文章：http://www.am0s.com/functions/204.html
+提交字符串为：ffifdyop
+即可
+神盾局的秘密f12,发现有两个url请求
+
+存在任意文件读取，读取showimg.php,查看源代码
+
+查看index.php
+
+发现shield.php,再读取shield.php内容
+12345678910111213141516&lt;?php	//flag is in pctf.php	class Shi...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/14</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2018/10/14/ve-2018-14421-seacms漏洞/" >
             
                 <span>cve-2018-14421_seacms漏洞</span>
@@ -615,40 +655,6 @@ Post基本上等同于get
 各种字符均过滤，则使用：uname=’!=!!(asci(mid((passwd)from(1)))=99)!=!!’1&amp;passwd=dddd
 然后盲注脚本post.py
 1234567891011121314151617181920212223242526272829-*...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/09/15</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/09/15/wireshark简单过滤规则/" >
-            
-                <span>wireshark简单过滤规则</span>
-        </a>
-        <div class="abstract-content">
-            Wireshark 基本语法，基本使用方法，及包过滤规则：
-1.过滤IP，如来源IP或者目标IP等于某个IP例子:
-ip.src eq 192.168.1.107 or ip.dst eq 192.168.1.107
-或者
-ip.addr eq 192.168.1.107 // 都能显示来源IP和目标IP
-Linux上运行的wireshark图形窗口截图示例，其他过虑规则操作类似，不再截图。
-ip.src eq 10.175.168.182
-截图示例：  
-
-提示： 在Filter编辑框中，收入过虑规则时，如果语法有误，框会显红色，如正确，会是绿色。
-2.过滤端口例子:
-tcp.port...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -1029,9 +1035,40 @@ tcp.port...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 22
+        Total : 23
         </div>
         <!-- search  -->
         
@@ -1047,7 +1084,7 @@ tcp.port...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
+            <span class="archive-post-date">11/20</span><a class="archive-post-title" href= "/2018/11/20/湖湘杯wp/" >湖湘杯wp</a>
         </li>
     
     
@@ -1058,6 +1095,11 @@ tcp.port...
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/海CTF（持续更新）/" >上海CTF（持续更新）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
         </li>
     
     
@@ -1092,17 +1134,17 @@ tcp.port...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/7月月赛/" >安恒7月月赛</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/ve-2018-14421-seacms漏洞/" >cve-2018-14421_seacms漏洞</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/arvisoj-web/" >jarvisoj-web</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/7月月赛/" >安恒7月月赛</a>
         </li>
     
     
@@ -1132,7 +1174,12 @@ tcp.port...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/wireshark简单过滤规则/" >wireshark简单过滤规则</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/sql-bypass-1/" >sql-bypass</a>
         </li>
     
     
@@ -1142,12 +1189,7 @@ tcp.port...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/wireshark简单过滤规则/" >wireshark简单过滤规则</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/sql-bypass-1/" >sql-bypass</a>
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
         </li>
     
     

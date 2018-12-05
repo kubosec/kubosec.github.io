@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>安恒9月月赛 · kubo&#39;s blog.</title>
+    <title>python学习 · kubo&#39;s blog.</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -217,7 +217,7 @@
                 <a href="/" >kubo&#39;s blog.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">安恒9月月赛</a>
+                <a href="#" class="post-name">python学习</a>
             </div>
     </div>
     
@@ -247,7 +247,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            安恒9月月赛
+            python学习
             <!-- 404 -->
             
         </h1>
@@ -266,12 +266,12 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">126</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">2.1k</span>阅读时长: <span class="post-count reading-time">8 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2018/09/23</span>
+                    <span class="post-intro-time">2018/12/05</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -395,31 +395,91 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>一月一次的安恒月赛又开始了、、、</p>
-<p>misc2</p>
-<p>下载之后是张png图片</p>
-<p><img src="\images\1537671898008.png" alt="1537671898008"></p>
-<p>修改尺寸后，看到</p>
-<p><img src="\images\1537671948492.png" alt="1537671948492"></p>
-<p>猜想是压缩包密码，binwalk原图片果然得到压缩包，输入密码解密后，得到Ditf.pcapng文件，</p>
-<p>分析一波</p>
-<p>http过滤，在最后看到一个kiss.png图片</p>
-<p><img src="\images\1537672208110.png" alt="1537672208110"></p>
-<p>追踪tcp流，提取图片</p>
-<p><img src="\images\1537672434655.png" alt="1537672434655"></p>
-<p>分析一波图片，没得到东西</p>
-<p>在看kiss.png上面的一条数据，发现一串base64代码</p>
-<p><img src="\images\1537672504526.png" alt="1537672504526"></p>
-<p>解码得 flag{Oz_4nd_Hir0_lov3_For3ver}<br>未完待续、、、</p>
-
+        <p>python学习基本告一段落，日后会更新python项目。</p>
+<h2 id="python2、3兼容并切换"><a href="#python2、3兼容并切换" class="headerlink" title="python2、3兼容并切换"></a>python2、3兼容并切换</h2><p>首先把python2、3都添加到环境变量</p>
+<p><strong>运行命令行</strong></p>
+<p>py -2 调用python2</p>
+<p>py -3 调用python3</p>
+<p><strong>运行脚本</strong></p>
+<p>python2 的脚本需要在脚本前加上</p>
+<p>#! python2</p>
+<p>python3 的脚本则需要加上</p>
+<p>#! python3</p>
+<p>运行时都使用py xxx.py</p>
+<p><strong>pip安装</strong></p>
+<p>分别要在不同环境下安装库时 当需要python2的pip时，只需</p>
+<p>py -2 -m pip install xxx</p>
+<p>当需要python3的pip时，只需</p>
+<p>py -3 -m pip install xxx</p>
+<h2 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h2><p>函数式编程的基础：函数本身也可以赋值给变量，即变量可以指向函数</p>
+<p>实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">-10</span>)</span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = abs</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f(<span class="number">-10</span>)</span><br><span class="line"><span class="number">10</span></span><br></pre></td></tr></table></figure>
+<h3 id="map-reduce"><a href="#map-reduce" class="headerlink" title="map/reduce"></a>map/reduce</h3><p>map()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; def f(x):</span><br><span class="line">...     return x * x</span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt; r = map(f, [1, 2, 3, 4, 5, 6, 7, 8, 9])</span><br><span class="line">&gt;&gt;&gt; list(r)</span><br><span class="line">[1, 4, 9, 16, 25, 36, 49, 64, 81]</span><br></pre></td></tr></table></figure>
+<p><code>map()</code>传入的第一个参数是<code>f</code>，即函数对象本身。由于结果<code>r</code>是一个<code>Iterator</code>，<code>Iterator</code>是惰性序列，因此通过<code>list()</code>函数让它把整个序列都计算出来并返回一个list。</p>
+<p>reduce()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; from functools import reduce</span><br><span class="line">&gt;&gt;&gt; def add(x, y):</span><br><span class="line">...     return x + y</span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt; reduce(add, [1, 3, 5, 7, 9])</span><br><span class="line">25</span><br></pre></td></tr></table></figure>
+<p><code>reduce</code>的用法。<code>reduce</code>把一个函数作用在一个序列<code>[x1, x2, x3, ...]</code>上，这个函数必须接收两个参数，<code>reduce</code>把结果继续和序列的下一个元素做累积计算。</p>
+<p>filter()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def not_empty(s):</span><br><span class="line">    return s and s.strip()</span><br><span class="line"></span><br><span class="line">list(filter(not_empty, [&apos;A&apos;, &apos;&apos;, &apos;B&apos;, None, &apos;C&apos;, &apos;  &apos;]))</span><br><span class="line"># 结果: [&apos;A&apos;, &apos;B&apos;, &apos;C&apos;]</span><br></pre></td></tr></table></figure>
+<p>和<code>map()</code>类似，<code>filter()</code>也接收一个函数和一个序列。和<code>map()</code>不同的是，<code>filter()</code>把传入的函数依次作用于每个元素，然后根据返回值是<code>True</code>还是<code>False</code>决定保留还是丢弃该元素。<code>filter()</code>这个高阶函数，关键在于正确实现一个“筛选”函数。<code>filter()</code>函数返回的是一个<code>Iterator</code>，也就是一个惰性序列，所以要强迫<code>filter()</code>完成计算结果，需要用<code>list()</code>函数获得所有结果并返回list。</p>
+<p><strong>脑洞新奇的练习代码</strong></p>
+<p>回数是指从左向右读和从右向左读都是一样的数，例如<code>12321</code>，<code>909</code>。请利用<code>filter()</code>筛选出回数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_palindrome</span><span class="params">(n)</span>:</span></span><br><span class="line">	s = str(n)</span><br><span class="line">	<span class="keyword">return</span> s==s[::<span class="number">-1</span>]</span><br><span class="line"><span class="comment"># 测试:</span></span><br><span class="line">output = filter(is_palindrome, range(<span class="number">1</span>, <span class="number">1000</span>))</span><br><span class="line">print(<span class="string">'1~1000:'</span>, list(output))</span><br><span class="line"><span class="keyword">if</span> list(filter(is_palindrome, range(<span class="number">1</span>, <span class="number">200</span>))) == [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">22</span>, <span class="number">33</span>, <span class="number">44</span>, <span class="number">55</span>, <span class="number">66</span>, <span class="number">77</span>, <span class="number">88</span>, <span class="number">99</span>, <span class="number">101</span>, <span class="number">111</span>, <span class="number">121</span>, <span class="number">131</span>, <span class="number">141</span>, <span class="number">151</span>, <span class="number">161</span>, <span class="number">171</span>, <span class="number">181</span>, <span class="number">191</span>]:</span><br><span class="line">    print(<span class="string">'测试成功!'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'测试失败!'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><p>使用模块有什么好处？</p>
+<p>最大的好处是大大提高了代码的可维护性。其次，编写代码不必从零开始。当一个模块编写完毕，就可以被其他地方引用。我们在编写程序的时候，也经常引用其他模块，包括Python内置的模块和来自第三方的模块。</p>
+<p>模块是一组Python代码的集合，可以使用其他模块，也可以被其他模块使用。</p>
+<p>创建自己的模块时，要注意：</p>
+<ul>
+<li>模块名要遵循Python变量命名规范，不要使用中文、特殊字符；</li>
+<li>模块名不要和系统模块名冲突，最好先查看系统是否已存在该模块，检查方法是在Python交互环境执行<code>import abc</code>，若成功则说明系统存在此模块。</li>
+</ul>
+<h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>类是创建实例的模板，而实例则是一个一个具体的对象，各个实例拥有的数据都互相独立，互不影响；</p>
+<p>方法就是与实例绑定的函数，和普通函数不同，方法可以直接访问实例的数据；</p>
+<p>通过在实例上调用方法，我们就直接操作了对象内部的数据，但无需知道方法内部的实现细节。</p>
+<p>和静态语言不同，Python允许对实例变量绑定任何数据，也就是说，对于两个实例变量，虽然它们都是同一个类的不同实例，但拥有的变量名称都可能不同。</p>
+<h2 id="面向对象高级编程"><a href="#面向对象高级编程" class="headerlink" title="面向对象高级编程"></a>面向对象高级编程</h2><h3 id="使用-slots"><a href="#使用-slots" class="headerlink" title="使用__slots__"></a>使用<code>__slots__</code></h3><p>为了达到限制的目的，Python允许在定义class的时候，定义一个特殊的<code>__slots__</code>变量，来限制该class实例能添加的属性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(object)</span>:</span></span><br><span class="line">    __slots__ = (<span class="string">'name'</span>, <span class="string">'age'</span>) <span class="comment"># 用tuple定义允许绑定的属性名称</span></span><br></pre></td></tr></table></figure>
+<p>使用<code>__slots__</code>要注意，<code>__slots__</code>定义的属性仅对当前类实例起作用，对继承的子类是不起作用的，除非在子类中也定义<code>__slots__</code>，这样，子类实例允许定义的属性就是自身的<code>__slots__</code>加上父类的<code>__slots__</code>。</p>
+<h2 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h2><h3 id="读文件"><a href="#读文件" class="headerlink" title="读文件"></a>读文件</h3><p><strong>文本文件（UTF-8）读取</strong></p>
+<p>一般打开文件方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f = open(&apos;./cipher_hex.txt&apos;,&apos;r&apos;)</span><br><span class="line">print(f.read())</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>由于文件读写时都有可能产生<code>IOError</code>，一旦出错，后面的<code>f.close()</code>就不会调用。所以，为了保证无论是否出错都能正确地关闭文件，我们可以使用<code>try ... finally</code>来实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">try:</span><br><span class="line">    f = open(&apos;/path/to/file&apos;, &apos;r&apos;)</span><br><span class="line">    print(f.read())</span><br><span class="line">finally:</span><br><span class="line">    if f:</span><br><span class="line">        f.close()</span><br></pre></td></tr></table></figure>
+<p>但是每次都这么写实在太繁琐，所以，Python引入了<code>with</code>语句来自动帮我们调用<code>close()</code>方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">with open(&apos;/path/to/file&apos;, &apos;r&apos;) as f:</span><br><span class="line">    print(f.read())</span><br></pre></td></tr></table></figure>
+<p>如果文件很小，<code>read()</code>一次性读取最方便；如果不能确定文件大小，反复调用<code>read(size)</code>比较保险；如果是配置文件，调用<code>readlines()</code>最方便：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for line in f.readlines():</span><br><span class="line">    print(line.strip()) # 把末尾的&apos;\n&apos;删掉</span><br></pre></td></tr></table></figure>
+<p><strong>二进制文件读取</strong></p>
+<p>前面讲的默认都是读取文本文件，并且是UTF-8编码的文本文件。要读取二进制文件，比如图片、视频等等，用<code>&#39;rb&#39;</code>模式打开文件即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; f = open(&apos;/Users/michael/test.jpg&apos;, &apos;rb&apos;)</span><br><span class="line">&gt;&gt;&gt; f.read()</span><br><span class="line">b&apos;\xff\xd8\xff\xe1\x00\x18Exif\x00\x00...&apos; # 十六进制表示的字节</span><br></pre></td></tr></table></figure>
+<p><strong>其它字符编码文件</strong></p>
+<p>要读取非UTF-8编码的文本文件，需要给<code>open()</code>函数传入<code>encoding</code>参数，例如，读取GBK编码的文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; f = open(&apos;/Users/michael/gbk.txt&apos;, &apos;r&apos;, encoding=&apos;gbk&apos;)</span><br><span class="line">&gt;&gt;&gt; f.read()</span><br><span class="line">&apos;测试&apos;</span><br></pre></td></tr></table></figure>
+<p>如遇到不能去读取的字符编码错误<code>UnicodeDecodeError</code>，可忽略</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f = open(&apos;/Users/michael/gbk.txt&apos;, &apos;r&apos;, encoding=&apos;gbk&apos;, errors=&apos;ignore&apos;)</span><br></pre></td></tr></table></figure>
+<h3 id="写文件"><a href="#写文件" class="headerlink" title="写文件"></a>写文件</h3><p>写文件和读文件是一样的，唯一区别是调用<code>open()</code>函数时，传入标识符<code>&#39;w&#39;</code>或者<code>&#39;wb&#39;</code>表示写文本文件或写二进制文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; f = open(&apos;/Users/michael/test.txt&apos;, &apos;w&apos;)</span><br><span class="line">&gt;&gt;&gt; f.write(&apos;Hello, world!&apos;)</span><br><span class="line">&gt;&gt;&gt; f.close()</span><br></pre></td></tr></table></figure>
+<p>最好用with自动关闭文件，否则文件有可能在内存中而并未写入文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">with open(&apos;/Users/michael/test.txt&apos;, &apos;w&apos;) as f:</span><br><span class="line">    f.write(&apos;Hello, world!&apos;)</span><br></pre></td></tr></table></figure>
+<p><code>以&#39;w&#39;模式写入文件时，如果文件已存在，会直接覆盖（相当于删掉后新写入一个文件），&#39;a&#39;</code>以追加（append）模式写入。</p>
+<h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h2><p>python提供了pickle模块来实现序列化</p>
+<p>把对象序列化并写入文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import pickle</span><br><span class="line">&gt;&gt;&gt; d = dict(name=&apos;Bob&apos;, age=20, score=88)</span><br><span class="line">&gt;&gt;&gt; pickle.dumps(d)</span><br><span class="line">b&apos;\x80\x03&#125;q\x00(X\x03\x00\x00\x00ageq\x01K\x14X\x05\x00\x00\x00scoreq\x02KXX\x04\x00\x00\x00nameq\x03X\x03\x00\x00\x00Bobq\x04u.&apos;</span><br></pre></td></tr></table></figure>
+<p><code>pickle.dumps()</code>方法把任意对象序列化成一个<code>bytes</code>，然后，就可以把这个<code>bytes</code>写入文件。或者用另一个方法<code>pickle.dump()</code>直接把对象序列化后写入一个file-like Object：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; f = open(&apos;dump.txt&apos;, &apos;wb&apos;)</span><br><span class="line">&gt;&gt;&gt; pickle.dump(d, f)</span><br><span class="line">&gt;&gt;&gt; f.close()</span><br></pre></td></tr></table></figure>
+<p>看看写入的<code>dump.txt</code>文件，一堆乱七八糟的内容，这些都是Python保存的对象内部信息。</p>
+<p>当我们要把对象从磁盘读到内存时，可以先把内容读到一个<code>bytes</code>，然后用<code>pickle.loads()</code>方法反序列化出对象，也可以直接用<code>pickle.load()</code>方法从一个<code>file-like Object</code>中直接反序列化出对象。我们打开另一个Python命令行来反序列化刚才保存的对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; f = open(&apos;dump.txt&apos;, &apos;rb&apos;)</span><br><span class="line">&gt;&gt;&gt; d = pickle.load(f)</span><br><span class="line">&gt;&gt;&gt; f.close()</span><br><span class="line">&gt;&gt;&gt; d</span><br><span class="line">&#123;&apos;age&apos;: 20, &apos;score&apos;: 88, &apos;name&apos;: &apos;Bob&apos;&#125;</span><br></pre></td></tr></table></figure>
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="http://www.lybsec.top">kubo</a>
-            <p>原文链接：<a href="http://www.lybsec.top/2018/09/23/安恒9月月赛/">http://www.lybsec.top/2018/09/23/安恒9月月赛/</a>
-            <p>发表日期：<a href="http://www.lybsec.top/2018/09/23/安恒9月月赛/">September 23rd 2018, 11:36:25 am</a>
-            <p>更新日期：<a href="http://www.lybsec.top/2018/09/23/安恒9月月赛/">September 23rd 2018, 11:38:20 am</a>
+            <p>原文链接：<a href="http://www.lybsec.top/2018/12/05/python学习/">http://www.lybsec.top/2018/12/05/python学习/</a>
+            <p>发表日期：<a href="http://www.lybsec.top/2018/12/05/python学习/">December 5th 2018, 5:35:28 pm</a>
+            <p>更新日期：<a href="http://www.lybsec.top/2018/12/05/python学习/">December 5th 2018, 5:36:26 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -427,17 +487,12 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2018/10/14/7月月赛/" title= "安恒7月月赛">
-                    <div class="nextTitle">安恒7月月赛</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2018/09/23/一次内网渗透过程/" title= "一次渗透测试过程">
-                    <div class="prevTitle">一次渗透测试过程</div>
+                <a href= "/2018/11/20/湖湘杯wp/" title= "湖湘杯wp">
+                    <div class="prevTitle">湖湘杯wp</div>
                 </a>
             
         </li>
@@ -556,7 +611,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#python2、3兼容并切换"><span class="toc-number">1.</span> <span class="toc-text">python2、3兼容并切换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数式编程"><span class="toc-number">2.</span> <span class="toc-text">函数式编程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#map-reduce"><span class="toc-number">2.1.</span> <span class="toc-text">map/reduce</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模块"><span class="toc-number">3.</span> <span class="toc-text">模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#面向对象"><span class="toc-number">4.</span> <span class="toc-text">面向对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#面向对象高级编程"><span class="toc-number">5.</span> <span class="toc-text">面向对象高级编程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-slots"><span class="toc-number">5.1.</span> <span class="toc-text">使用__slots__</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IO"><span class="toc-number">6.</span> <span class="toc-text">IO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#读文件"><span class="toc-number">6.1.</span> <span class="toc-text">读文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#写文件"><span class="toc-number">6.2.</span> <span class="toc-text">写文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#序列化"><span class="toc-number">7.</span> <span class="toc-text">序列化</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>

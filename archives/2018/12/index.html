@@ -346,6 +346,48 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2018/12/06/BC字节翻转攻击原理/" >
+            
+                <span>CBC字节翻转攻击原理</span>
+        </a>
+        <div class="abstract-content">
+            CBC翻转攻击原理之前就做过这个题目，这次又碰到了，做个原理分析笔记。
+CBC模式加密过程
+使用网上图例显示如下：
+
+其中：
+
+Plaintext：明文数据
+IV：初始向量
+Key：分组加密使用的密匙
+Ciphertext：密文数据
+
+明文先与混淆数据（第一组是与IV，之后都是与前一组的密文）进行异或，最执行分组加密。
+解密过程
+解密时，需先进行分组解密，再与前一组密文进行异或得到最初的明文，而第一组是与IV异或。
+攻击方式对于解密时：
+设明文为X，密文为Y，解密函数为k。
+X[i] = k(Y[i]) Xor Y[i-1]
+解密第一组时：
+X[1]=k(Y[1]) xor IV
+对于X...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/12/06</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2018/12/05/python学习/" >
             
                 <span>python学习</span>
@@ -789,12 +831,9 @@ py -3 -m pip install xxx
     
     
     
-    
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 24
+        Total : 25
         </div>
         <!-- search  -->
         
@@ -810,6 +849,11 @@ py -3 -m pip install xxx
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">12/06</span><a class="archive-post-title" href= "/2018/12/06/BC字节翻转攻击原理/" >CBC字节翻转攻击原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">12/05</span><a class="archive-post-title" href= "/2018/12/05/python学习/" >python学习</a>
         </li>
     
@@ -820,17 +864,17 @@ py -3 -m pip install xxx
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/海CTF（持续更新）/" >上海CTF（持续更新）</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/件格式（png、zip持续更新）/" >文件格式（png、zip持续更新）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
         </li>
     
     
@@ -880,7 +924,7 @@ py -3 -m pip install xxx
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/一次内网渗透过程/" >一次渗透测试过程</a>
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/安恒9月月赛/" >安恒9月月赛</a>
         </li>
     
     
@@ -890,7 +934,7 @@ py -3 -m pip install xxx
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/安恒9月月赛/" >安恒9月月赛</a>
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/一次内网渗透过程/" >一次渗透测试过程</a>
         </li>
     
     
@@ -905,22 +949,22 @@ py -3 -m pip install xxx
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/sql-bypass-1/" >sql-bypass</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/thinkphp代码审计/" >thinkphp代码审计</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/wireshark简单过滤规则/" >wireshark简单过滤规则</a>
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/sql-bypass-1/" >sql-bypass</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/wireshark简单过滤规则/" >wireshark简单过滤规则</a>
         </li>
     
     

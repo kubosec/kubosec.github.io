@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="kubo">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="kubo">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>CBC字节翻转攻击原理 · kubo&#39;s blog.</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/favicon.ico" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >kubo&#39;s blog.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">CBC字节翻转攻击原理</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>kubo's blog.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            CBC字节翻转攻击原理
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">3.2k</span>阅读时长: <span class="post-count reading-time">15 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2018/12/06</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h3 id="CBC翻转攻击原理"><a href="#CBC翻转攻击原理" class="headerlink" title="CBC翻转攻击原理"></a>CBC翻转攻击原理</h3><p>之前就做过这个题目，这次又碰到了，做个原理分析笔记。</p>
+<h4 id="CBC模式"><a href="#CBC模式" class="headerlink" title="CBC模式"></a><strong>CBC模式</strong></h4><p><strong>加密过程</strong></p>
+<p>使用网上图例显示如下：</p>
+<p><img src="\images\15198072135832.png" alt="15198072135832"></p>
+<p>其中：</p>
+<blockquote>
+<p>Plaintext：明文数据</p>
+<p>IV：初始向量</p>
+<p>Key：分组加密使用的密匙</p>
+<p>Ciphertext：密文数据</p>
+</blockquote>
+<p>明文先与混淆数据（第一组是与IV，之后都是与前一组的密文）进行异或，最执行分组加密。</p>
+<p><strong>解密过程</strong></p>
+<p>解密时，需先进行分组解密，再与前一组密文进行异或得到最初的明文，而第一组是与IV异或。</p>
+<h4 id="攻击方式"><a href="#攻击方式" class="headerlink" title="攻击方式"></a>攻击方式</h4><p><strong>对于解密时：</strong></p>
+<p>设明文为X，密文为Y，解密函数为k。</p>
+<p>X[i] = k(Y[i]) Xor Y[i-1]</p>
+<p><strong>解密第一组时：</strong></p>
+<p>X[1]=k(Y[1]) xor IV</p>
+<p>对于X[i]的解密时，X[i] = k(Y[i]) xor Y[i-1]，k(Y[i])部分是无法控制的，假如修改Y[i]的值，是无法确定k(Y[i])的值，由于最后是异或操作，因此可以仅修改Y[i-1]的内容为Y’[i-1]来控制最后的明文的值，设解密后的内容为M[i]=k(Y[i]) xor Y[i-1]。</p>
+<p>将Y[i-1]的值设置为Y[i-1] xor M[i]的值，新的Y[i-1]的值用Y’[i-1]表示。</p>
+<p>那么X[i] = k(Y[i]) xor Y’[i-1]=k(Y[i]) xor Y[i-1] xor M[i] = M[i] xor M[i] = 0</p>
+<p>这样就能将只修改Y[i-1]的内容来控制X[i]的值</p>
+<p>而此时X[i-1]的值肯定就会出错了，设修改Y[i-1]的值，导致解密后X[i-1]的值为M[i-1]，那么将Y[i-2]的值改为Y[i-2]=Y[i-2] xor M[i-1] Xor 任意值，可以使得X[i-1]=任意值</p>
+<p>这样循环往前，最后一组就是根据M[1]的值修改IV=IV xor M[1] xor 任意值，使得X[1]=任意值</p>
+<p><img src="\images\cbc攻击原理图.png" alt="cbc攻击原理图"></p>
+<h4 id="代码测试"><a href="#代码测试" class="headerlink" title="代码测试"></a>代码测试</h4><p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">coding:utf<span class="number">-8</span></span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> b2a_hex,a2b_hex</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span><span class="params">(iv,plaintext)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(plaintext)%<span class="number">16</span> != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"plaintext length is invalid"</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> len(iv) != <span class="number">16</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"IV length is invalid"</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    key=<span class="string">"1234567890123456"</span></span><br><span class="line">    aes_encrypt = AES.new(key,AES.MODE_CBC,IV=iv)</span><br><span class="line">    <span class="keyword">return</span> b2a_hex(aes_encrypt.encrypt(plaintext))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(iv,cipher)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(iv) != <span class="number">16</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"IV length is invalid"</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    key=<span class="string">"1234567890123456"</span></span><br><span class="line">    aes_decrypt = AES.new(key,AES.MODE_CBC,IV=iv)</span><br><span class="line">    <span class="keyword">return</span> b2a_hex(aes_decrypt.decrypt(a2b_hex(cipher)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">    iv=<span class="string">"ABCDEFGH12345678"</span></span><br><span class="line">    plaintext=<span class="string">"0123456789ABCDEFhellocbcflipping"</span></span><br><span class="line">    cipher=encrypt(iv, plaintext)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"cipher:"</span>+cipher</span><br><span class="line">    de_cipher = decrypt(iv, cipher)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"de_cipher:"</span>+de_cipher</span><br><span class="line">    <span class="keyword">print</span> a2b_hex(de_cipher)</span><br></pre></td></tr></table></figure>
+<p>代码中encrypt是加密函数，decrypt是解密函数，test方法可以理解为测试员，可以定义IV，明文，密文，但是不知道key是多少。</p>
+<p>测试结果如下：+</p>
+<p><img src="\images\1544005974087.png" alt="1544005974087"></p>
+<p>使用cbc字节翻转攻击使得字符的g变成G。g是第二组的第16个字节，最后异或的是第一组密文的第16个字节，即是cipher[15]，因此需要将字节修改为cipher[15] xor ord(‘g’) xor ord(‘G’)</p>
+<p>修改test方法，增加一些内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">    iv=<span class="string">"ABCDEFGH12345678"</span></span><br><span class="line">    plaintext=<span class="string">"0123456789ABCDEFhellocbcflipping"</span></span><br><span class="line">    cipher=encrypt(iv, plaintext)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"cipher:"</span>+cipher</span><br><span class="line">    de_cipher = decrypt(iv, cipher)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"de_cipher:"</span>+de_cipher</span><br><span class="line">    <span class="keyword">print</span> a2b_hex(de_cipher)</span><br><span class="line"><span class="comment">#-------------------adding 1 start-----------------------------------</span></span><br><span class="line">    bin_cipher = bytearray(a2b_hex(cipher))</span><br><span class="line">    bin_cipher[<span class="number">15</span>] = bin_cipher[<span class="number">15</span>] ^ ord(<span class="string">'g'</span>) ^ ord(<span class="string">'G'</span>)</span><br><span class="line">    de_cipher = decrypt(iv,b2a_hex(bin_cipher))</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"de_cipher2:"</span>+de_cipher</span><br><span class="line">    <span class="keyword">print</span> a2b_hex(de_cipher)</span><br><span class="line"><span class="comment">#-------------------adding 1 end-------------------------------------</span></span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<p><img src="\images\1544007839180.png" alt="1544007839180"></p>
+<p>可以看到，小写字母g变成了大写字母G。但是因为修改了第一组的密文，所以第一组解密时变成乱码了。此时可一次该IV的值来控制第一组密文解密后的结果，但是需要de_cipher2的内容，如果是将前十六个字节都修改为X，那么需要将IV与de_cipher2相应下标的值进行异或再与ord(‘X’)进行异或，最后的结果就是新的IV的值。</p>
+<p>继续修改test方法，增加内容</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">    iv=<span class="string">"ABCDEFGH12345678"</span></span><br><span class="line">    plaintext=<span class="string">"0123456789ABCDEFhellocbcflipping"</span></span><br><span class="line">    cipher=encrypt(iv, plaintext)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"cipher:"</span>+cipher</span><br><span class="line">    de_cipher = decrypt(iv, cipher)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"de_cipher:"</span>+de_cipher</span><br><span class="line">    <span class="keyword">print</span> a2b_hex(de_cipher)</span><br><span class="line"><span class="comment">#-------------------adding 1 start-----------------------------------</span></span><br><span class="line">    bin_cipher = bytearray(a2b_hex(cipher))</span><br><span class="line">    bin_cipher[<span class="number">15</span>] = bin_cipher[<span class="number">15</span>] ^ ord(<span class="string">'g'</span>) ^ ord(<span class="string">'G'</span>)</span><br><span class="line">    de_cipher = decrypt(iv,b2a_hex(bin_cipher))</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"de_cipher2:"</span>+de_cipher</span><br><span class="line">    <span class="keyword">print</span> a2b_hex(de_cipher)</span><br><span class="line"><span class="comment">#-------------------adding 1 end-------------------------------------</span></span><br><span class="line"><span class="comment">#-------------------adding 2 start-----------------------------------</span></span><br><span class="line">    bin_decipher = bytearray(a2b_hex(de_cipher))</span><br><span class="line">    bin_iv = bytearray(iv)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(iv)):</span><br><span class="line">        bin_iv[i] = bin_iv[i] ^ bin_decipher[i] ^ ord(<span class="string">'X'</span>)</span><br><span class="line">    de_cipher = decrypt(str(bin_iv),b2a_hex(bin_cipher))</span><br><span class="line">    <span class="keyword">print</span> <span class="string">"de_cipher3:"</span>+de_cipher</span><br><span class="line">    <span class="keyword">print</span> a2b_hex(de_cipher)</span><br><span class="line"><span class="comment">#-------------------adding 2 end-------------------------------------</span></span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<p><img src="\images\1544008695742.png" alt="1544008695742"></p>
+<p>可以看到在不知道key的情况下，通过修改密文和IV（还有个条件是获得每次解密后的结果 ），可以控制输出的明文为自己想要的内容，而且只能从最后一组开始修改，并且每改完一组，都需要重新获取一次解密后的数据，要根据解密后的数据来修改前一组密文的值。</p>
+<h4 id="Padding-Oracle-Attack"><a href="#Padding-Oracle-Attack" class="headerlink" title="Padding Oracle Attack"></a>Padding Oracle Attack</h4><h5 id="padding"><a href="#padding" class="headerlink" title="padding"></a>padding</h5><p>先提一下padding，实际加密数据时，由于明文长度不会一直正好是分组的倍数，因此就需要添加附加的数据来使得加密的数据的长度是分组长度的倍数。</p>
+<p>使用以下策略添加（按照AES算法）：</p>
+<p>如果需要添加一个字节，就添加0×01</p>
+<p>如果需要添加两个字节，就添加0×02 0×02</p>
+<p>三个字节就是：0×03 0×03 0×03，依次类推。</p>
+<p>如果正好是分组长度倍数，如16个字节，也需要再添加16个0×10进行padding</p>
+<p>以下是pad方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def pad(plaintext):</span><br><span class="line">    block_size=16</span><br><span class="line">    num = block_size - len(plaintext)%block_size</span><br><span class="line">    padding = hex(num)[2:] if num&gt;0x0f else &apos;0&apos;+hex(num)[2:]</span><br><span class="line">    return a2b_hex(b2a_hex(plaintext)+padding*num)</span><br></pre></td></tr></table></figure>
+<p>使用该pad函数，编写加密解密方法，解密时需要获取最后一个字节的内容，根据其值判断最后几个字节是否值相等，由于本次实验使用aes加密算法，所以多了个if语句判断num的值是否在1~16范围内，这个If语句可以删除。另外decrypt方法返回两个结果，status和解密后的数据，模仿HTTP，如果200说明padding正确，解密应该是正确的，如果是500说明解密失败  。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> Crypto <span class="keyword">import</span> Random</span><br><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> b2a_hex,a2b_hex</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pad</span><span class="params">(plaintext)</span>:</span></span><br><span class="line">block_size=<span class="number">16</span></span><br><span class="line">num = block_size - len(plaintext)%block_size</span><br><span class="line">padding = hex(num)[<span class="number">2</span>:] <span class="keyword">if</span> num&gt;<span class="number">0x0f</span> <span class="keyword">else</span> <span class="string">'0'</span>+hex(num)[<span class="number">2</span>:]</span><br><span class="line"><span class="keyword">return</span> a2b_hex(b2a_hex(plaintext)+padding*num)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span><span class="params">(key,iv,plaintext)</span>:</span></span><br><span class="line">key_len = len(key)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> (key_len == <span class="number">16</span> <span class="keyword">or</span> key_len == <span class="number">24</span> <span class="keyword">or</span> key_len == <span class="number">32</span>):</span><br><span class="line"><span class="keyword">print</span> <span class="string">"key length is invalid"</span></span><br><span class="line"><span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">pad_plaintext = pad(plaintext)</span><br><span class="line">aes_encrypt = AES.new(key,AES.MODE_CBC,IV=iv)</span><br><span class="line"><span class="keyword">return</span> b2a_hex(aes_encrypt.encrypt(pad_plaintext))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(key,iv,cipher)</span>:</span></span><br><span class="line">key_len = len(key)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> (key_len == <span class="number">16</span> <span class="keyword">or</span> key_len == <span class="number">24</span> <span class="keyword">or</span> key_len == <span class="number">32</span>):</span><br><span class="line"><span class="keyword">print</span> <span class="string">"key length is invalid"</span></span><br><span class="line"><span class="keyword">return</span> <span class="number">500</span>,<span class="string">""</span></span><br><span class="line"><span class="keyword">if</span> len(iv) != <span class="number">16</span>:</span><br><span class="line"><span class="keyword">print</span> <span class="string">"IV length is invalid"</span></span><br><span class="line"><span class="keyword">return</span> <span class="number">500</span>,<span class="string">""</span></span><br><span class="line">aes_decrypt = AES.new(key,AES.MODE_CBC,IV=iv)</span><br><span class="line">pad_plaintext = aes_decrypt.decrypt(a2b_hex(cipher))</span><br><span class="line">length = len (pad_plaintext)</span><br><span class="line">num = ord(pad_plaintext[length<span class="number">-1</span>])</span><br><span class="line"><span class="keyword">if</span> num &lt; <span class="number">1</span> <span class="keyword">or</span> num &gt; <span class="number">16</span>:</span><br><span class="line"><span class="keyword">return</span> <span class="number">500</span>,<span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,num):</span><br><span class="line"><span class="keyword">if</span> ord(pad_plaintext[length<span class="number">-1</span>-i]) != num:</span><br><span class="line"><span class="keyword">return</span> <span class="number">500</span>,<span class="string">""</span></span><br><span class="line">plaintext = pad_plaintext[:length-num]</span><br><span class="line"><span class="keyword">return</span> <span class="number">200</span>,b2a_hex(plaintext)</span><br></pre></td></tr></table></figure>
+<h5 id="攻击原理"><a href="#攻击原理" class="headerlink" title="攻击原理"></a>攻击原理</h5><p>现在说一下具体攻击，CBC字节翻转攻击内容不提了，直接举栗说明，假设有密文cipher，长度为32字节（如果密文长度只有16字节，那么就将IV加在密文前面，变成32字节），分成两组prev=cipher[0:16],current=cipher[16:32]。</p>
+<p>再设一个tmp_prev为16个0×00组成，先用tmp_prev+current去解密，解密后的结果末尾一般是不会满足padding规则的（别和我说如果，遇到了算你倒霉，但概率应该几乎为0吧），设current经过分组加密算法解密后的值为de_current，current解密后对应的明文为plaintext。</p>
+<p>然后修改tmp_prev[15]的内容，从0×00遍历到0xff，有且仅有一个值使得tmp_prev+current的解密时满足padding规则的，此时解密后的最后一个字节内容应该是0×01</p>
+<p>针对0×01来看下以下的表达式：</p>
+<blockquote>
+<p>tmp_prev[15] Xor de_current[15] = 0×01  (1)</p>
+<p>prev[15] Xor de_current[15] = plaintext[15]  (2)</p>
+</blockquote>
+<p>(1),(2)两个表达式左右两边再进行异或，等式还是成立的，因此得到下面的等式：</p>
+<blockquote>
+<p>tmp_prev[15] Xor prev[15] = plaintext[15] Xor 0×01</p>
+</blockquote>
+<p>所以</p>
+<blockquote>
+<p>plaintext[15] = tmp_prev[15] Xor prev[15] Xor 0×01</p>
+</blockquote>
+<p>这样就能获得明文的最后一个字节了。</p>
+<p>接着依然是要让tmp_prev+current满足padding，不过最后两个字节为0×02，由于已经知道最后一个字节的内容了，因此很容易设置tmp_prev[15]的内容使得最后一个字节解密为0×02，然后同理使tmp_prev[14]从0×00遍历到0xff，有且仅有一个使得解密后padding正确。</p>
+<p>tmp_prev[15]设置为prev[15] Xor plaintext[15] Xor 0×02</p>
+<p>而plaintext[14]= tmp_prev[14] Xor prev[14] Xor 0×02</p>
+<p>依次类推，就能获得current组对应的明文，如果需要prev组的明文，就需要prev组和prev前一组的密文重复上述操作，对于第一组密文，则是IV+第一组密文重复上述操作。</p>
+<h5 id="代码模拟"><a href="#代码模拟" class="headerlink" title="代码模拟"></a>代码模拟</h5><p>定义一个blackbox方法，接受两种调用方法，一种是blackbox()，返回结果是随机生成的IV以及加密后的密文（明文是随机生成的33个字符，我也不知道内容），另一种是blackbox(iv,cipher)，进行解密，根据padding判断解密是否正确，只有两种返回值200（正确），500（不正确） </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">blackbox</span><span class="params">(iv=None,cipher=None)</span>:</span></span><br><span class="line">key=<span class="string">"1234567890123456"</span></span><br><span class="line"><span class="keyword">if</span> iv <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">iv = Random.new().read(AES.block_size)</span><br><span class="line">plaintext=<span class="string">''</span>.join(random.choice(string.ascii_letters) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">33</span>))</span><br><span class="line">cipher = encrypt(key, iv, plaintext)</span><br><span class="line"><span class="keyword">return</span> b2a_hex(iv),cipher</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">status,plaintext = decrypt(key, iv, cipher)</span><br><span class="line"><span class="keyword">return</span> status</span><br></pre></td></tr></table></figure>
+<p>现在是根据2.攻击原理写的代码，因为需要去调用blackbox，所以每次都是需要iv的值的，该方法每次传入两组密文，解密current组对应的明文的值返回。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">padding_attack</span><span class="params">(iv,prev,current)</span>:</span></span><br><span class="line">tmp_prev = bytearray(<span class="number">16</span>)</span><br><span class="line">byte_plain = bytearray(<span class="number">16</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range (<span class="number">0</span>,<span class="number">16</span>):</span><br><span class="line"><span class="keyword">if</span> i != <span class="number">0</span>:</span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range (<span class="number">0</span>,i):</span><br><span class="line">tmp_prev[<span class="number">15</span>-j] = prev[<span class="number">15</span>-j] ^ byte_plain[<span class="number">15</span>-j] ^ (i+<span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> test <span class="keyword">in</span> range (<span class="number">0</span>,<span class="number">256</span>):</span><br><span class="line">tmp_prev[<span class="number">15</span>-i] = test</span><br><span class="line">status = blackbox(iv, b2a_hex(str(tmp_prev+current)))</span><br><span class="line"><span class="keyword">if</span> status == <span class="number">200</span>:</span><br><span class="line">byte_plain[<span class="number">15</span>-i] = tmp_prev[<span class="number">15</span>-i] ^ (i+<span class="number">1</span>) ^ prev[<span class="number">15</span>-i]</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line"><span class="keyword">continue</span></span><br><span class="line"><span class="keyword">return</span> byte_plain</span><br></pre></td></tr></table></figure>
+<p>再写一个遍历密文和IV的方法，依次调用上面的攻击方法，获取全部的明文，并删除padding部分，返回</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">attack</span><span class="params">(iv,cipher)</span>:</span></span><br><span class="line">byte_cipher = bytearray(a2b_hex(cipher))</span><br><span class="line">byte_iv = bytearray(iv)</span><br><span class="line">cipher_length = len(byte_cipher)</span><br><span class="line">num_group = cipher_length / <span class="number">16</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,num_group):</span><br><span class="line"><span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">byte_plain = padding_attack(iv,byte_iv, byte_cipher[i*<span class="number">16</span>:i*<span class="number">16</span>+<span class="number">16</span>])</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">byte_plain = byte_plain + padding_attack(iv,byte_cipher[(i<span class="number">-1</span>)*<span class="number">16</span>:i*<span class="number">16</span>], byte_cipher[i*<span class="number">16</span>:i*<span class="number">16</span>+<span class="number">16</span>])</span><br><span class="line"><span class="keyword">return</span> byte_plain[:cipher_length-byte_plain[cipher_length<span class="number">-1</span>]]</span><br></pre></td></tr></table></figure>
+<p>最后写一个测试方法验证攻击是否成功  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">iv,cipher = blackbox()</span><br><span class="line"><span class="keyword">print</span> iv</span><br><span class="line"><span class="keyword">print</span> cipher</span><br><span class="line">iv = a2b_hex(iv)</span><br><span class="line">plaintext = attack(iv, cipher)</span><br><span class="line"><span class="keyword">print</span> plaintext</span><br><span class="line"><span class="comment">#-------------------verification--------------------------</span></span><br><span class="line">key = <span class="string">"1234567890123456"</span></span><br><span class="line">cipher_test = encrypt(key, iv, plaintext)</span><br><span class="line"><span class="keyword">print</span> cipher == cipher_test</span><br></pre></td></tr></table></figure>
+<p>代码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> Crypto <span class="keyword">import</span> Random</span><br><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> b2a_hex,a2b_hex</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pad</span><span class="params">(plaintext)</span>:</span></span><br><span class="line">block_size=<span class="number">16</span></span><br><span class="line">num = block_size - len(plaintext)%block_size</span><br><span class="line">padding = hex(num)[<span class="number">2</span>:] <span class="keyword">if</span> num&gt;<span class="number">0x0f</span> <span class="keyword">else</span> <span class="string">'0'</span>+hex(num)[<span class="number">2</span>:]</span><br><span class="line"><span class="keyword">return</span> a2b_hex(b2a_hex(plaintext)+padding*num)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span><span class="params">(key,iv,plaintext)</span>:</span></span><br><span class="line">key_len = len(key)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> (key_len == <span class="number">16</span> <span class="keyword">or</span> key_len == <span class="number">24</span> <span class="keyword">or</span> key_len == <span class="number">32</span>):</span><br><span class="line"><span class="keyword">print</span> <span class="string">"key length is invalid"</span></span><br><span class="line"><span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">pad_plaintext = pad(plaintext)</span><br><span class="line">aes_encrypt = AES.new(key,AES.MODE_CBC,IV=iv)</span><br><span class="line"><span class="keyword">return</span> b2a_hex(aes_encrypt.encrypt(pad_plaintext))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(key,iv,cipher)</span>:</span></span><br><span class="line">key_len = len(key)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> (key_len == <span class="number">16</span> <span class="keyword">or</span> key_len == <span class="number">24</span> <span class="keyword">or</span> key_len == <span class="number">32</span>):</span><br><span class="line"><span class="keyword">print</span> <span class="string">"key length is invalid"</span></span><br><span class="line"><span class="keyword">return</span> <span class="number">500</span>,<span class="string">""</span></span><br><span class="line"><span class="keyword">if</span> len(iv) != <span class="number">16</span>:</span><br><span class="line"><span class="keyword">print</span> <span class="string">"IV length is invalid"</span></span><br><span class="line"><span class="keyword">return</span> <span class="number">500</span>,<span class="string">""</span></span><br><span class="line">aes_decrypt = AES.new(key,AES.MODE_CBC,IV=iv)</span><br><span class="line">pad_plaintext = aes_decrypt.decrypt(a2b_hex(cipher))</span><br><span class="line">length = len (pad_plaintext)</span><br><span class="line">num = ord(pad_plaintext[length<span class="number">-1</span>])</span><br><span class="line"><span class="keyword">if</span> num &lt; <span class="number">1</span> <span class="keyword">or</span> num &gt; <span class="number">16</span>:</span><br><span class="line"><span class="keyword">return</span> <span class="number">500</span>,<span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,num):</span><br><span class="line"><span class="keyword">if</span> ord(pad_plaintext[length<span class="number">-1</span>-i]) != num:</span><br><span class="line"><span class="keyword">return</span> <span class="number">500</span>,<span class="string">""</span></span><br><span class="line">plaintext = pad_plaintext[:length-num]</span><br><span class="line"><span class="keyword">return</span> <span class="number">200</span>,b2a_hex(plaintext)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">blackbox</span><span class="params">(iv=None,cipher=None)</span>:</span></span><br><span class="line">key=<span class="string">"1234567890123456"</span></span><br><span class="line"><span class="keyword">if</span> iv <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">iv = Random.new().read(AES.block_size)</span><br><span class="line">plaintext=<span class="string">''</span>.join(random.choice(string.ascii_letters) <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">33</span>))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"random plaintext:"</span>+plaintext</span><br><span class="line">cipher = encrypt(key, iv, plaintext)</span><br><span class="line"><span class="keyword">return</span> b2a_hex(iv),cipher</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">status,plaintext = decrypt(key, iv, cipher)</span><br><span class="line"><span class="keyword">return</span> status</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">padding_attack</span><span class="params">(iv,prev,current)</span>:</span></span><br><span class="line">tmp_prev = bytearray(<span class="number">16</span>)</span><br><span class="line">byte_plain = bytearray(<span class="number">16</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range (<span class="number">0</span>,<span class="number">16</span>):</span><br><span class="line"><span class="keyword">if</span> i != <span class="number">0</span>:</span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range (<span class="number">0</span>,i):</span><br><span class="line">tmp_prev[<span class="number">15</span>-j] = prev[<span class="number">15</span>-j] ^ byte_plain[<span class="number">15</span>-j] ^ (i+<span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> test <span class="keyword">in</span> range (<span class="number">0</span>,<span class="number">256</span>):</span><br><span class="line">tmp_prev[<span class="number">15</span>-i] = test</span><br><span class="line">status = blackbox(iv, b2a_hex(str(tmp_prev+current)))</span><br><span class="line"><span class="keyword">if</span> status == <span class="number">200</span>:</span><br><span class="line">byte_plain[<span class="number">15</span>-i] = tmp_prev[<span class="number">15</span>-i] ^ (i+<span class="number">1</span>) ^ prev[<span class="number">15</span>-i]</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line"><span class="keyword">continue</span></span><br><span class="line"><span class="keyword">return</span> byte_plain</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">attack</span><span class="params">(iv,cipher)</span>:</span></span><br><span class="line">byte_cipher = bytearray(a2b_hex(cipher))</span><br><span class="line">byte_iv = bytearray(iv)</span><br><span class="line">cipher_length = len(byte_cipher)</span><br><span class="line">num_group = cipher_length / <span class="number">16</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,num_group):</span><br><span class="line"><span class="keyword">if</span> i == <span class="number">0</span>:</span><br><span class="line">byte_plain = padding_attack(iv,byte_iv, byte_cipher[i*<span class="number">16</span>:i*<span class="number">16</span>+<span class="number">16</span>])</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">byte_plain = byte_plain + padding_attack(iv,byte_cipher[(i<span class="number">-1</span>)*<span class="number">16</span>:i*<span class="number">16</span>], byte_cipher[i*<span class="number">16</span>:i*<span class="number">16</span>+<span class="number">16</span>])</span><br><span class="line"><span class="keyword">return</span> byte_plain[:cipher_length-byte_plain[cipher_length<span class="number">-1</span>]]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">iv,cipher = blackbox()</span><br><span class="line">iv = a2b_hex(iv)</span><br><span class="line">plaintext = attack(iv, cipher)</span><br><span class="line"><span class="keyword">print</span> plaintext</span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<p><img src="\images\1544014508428.png" alt="1544014508428"></p>
+<h4 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h4><p>nc连接，有如下功能：</p>
+<p><img src="\images\1544085144233.png" alt="1544085144233"></p>
+<p>测试发现，info查看iv，cipher，plain信息，edit修改信息。分析是cbc字节翻转攻击。</p>
+<p>使用1dmin登录，查看info信息</p>
+<p><img src="\images\1544085260375.png" alt="1544085260375"></p>
+<p>解码plain得到：<code>{&#39;username__&#39;: &#39;1dmin&#39;, &#39;login_time__&#39;: 1544111131.77148}0000000</code></p>
+<p>修改<code>1dmin</code>中的<code>1</code>为<code>a</code>，即<code>bin_cipher[0] ^ ord(&#39;1&#39;) ^ ord(&#39;a&#39;)</code>。脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> b2a_hex,a2b_hex</span><br><span class="line"></span><br><span class="line">cipher=<span class="string">'658d8a4c2373a84b8d1a81fe1212b007d12d7b2552ceab1f0c4914413c05c812d23bc3e50afe799a9d53f11537fa9b6b615914d9aa7b7912253fcd59a1b85633'</span></span><br><span class="line">bin_cipher = bytearray(a2b_hex(cipher))</span><br><span class="line">bin_cipher[<span class="number">0</span>] = bin_cipher[<span class="number">0</span>] ^ ord(<span class="string">'1'</span>) ^ ord(<span class="string">'a'</span>)</span><br><span class="line"><span class="keyword">print</span> b2a_hex(bin_cipher)</span><br></pre></td></tr></table></figure>
+<p>解码新的plain得：<code>f�Ϊts�!���d�b�admin&#39;, &#39;login_time__&#39;: 1544112858.782392}000000</code>发现虽然得到想要的<code>admin</code>了，但是前面的部分变成了乱码，这是由于修改了<code>1dmin</code>的缘故，于是编写脚本修改IV使前面的部分恢复为<code>{&#39;username__&#39;: &#39;</code>即可，根据上文<strong>攻击方式</strong>分析可知：最后一组就是根据M[1]的值修改IV=IV xor M[1] xor 任意值，使得X[1]=任意值。所以编写脚本修改IV。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">plain = <span class="string">'668aceaa7473c521e9d2c96408ca62cc'</span>.decode(<span class="string">'hex'</span>)</span><br><span class="line">want = <span class="string">"&#123;'username__': '"</span></span><br><span class="line">first_16 = <span class="string">''</span></span><br><span class="line">iv = <span class="string">'aba9f1351bd6d495ba44838eed537ea5'</span>.decode(<span class="string">'hex'</span>)</span><br><span class="line">    <span class="comment">#b6044aec0ad77fd53ef315b5c2a33c4e</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">16</span>):</span><br><span class="line">    first_16 += chr(ord(plain[i]) ^ ord(iv[i]) ^ ord(want[i]))</span><br><span class="line">newiv = first_16</span><br><span class="line"><span class="keyword">print</span> newiv.encode(<span class="string">'hex'</span>)</span><br></pre></td></tr></table></figure>
+<p>再次edit，得到<code>flag{cce8a1ec51ac432c774d0198e388b034}</code></p>
+<p>整体脚本如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> b2a_hex,a2b_hex</span><br><span class="line"></span><br><span class="line">cipher=<span class="string">'658d8a4c2373a84b8d1a81fe1212b007d12d7b2552ceab1f0c4914413c05c812d23bc3e50afe799a9d53f11537fa9b6b615914d9aa7b7912253fcd59a1b85633'</span></span><br><span class="line">bin_cipher = bytearray(a2b_hex(cipher))</span><br><span class="line">bin_cipher[<span class="number">0</span>] = bin_cipher[<span class="number">0</span>] ^ ord(<span class="string">'1'</span>) ^ ord(<span class="string">'a'</span>)</span><br><span class="line"><span class="keyword">print</span> b2a_hex(bin_cipher)</span><br><span class="line"></span><br><span class="line">plain = <span class="string">'668aceaa7473c521e9d2c96408ca62cc'</span>.decode(<span class="string">'hex'</span>)</span><br><span class="line">want = <span class="string">"&#123;'username__': '"</span></span><br><span class="line">first_16 = <span class="string">''</span></span><br><span class="line">iv = <span class="string">'aba9f1351bd6d495ba44838eed537ea5'</span>.decode(<span class="string">'hex'</span>)</span><br><span class="line">    <span class="comment">#b6044aec0ad77fd53ef315b5c2a33c4e</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">16</span>):</span><br><span class="line">    first_16 += chr(ord(plain[i]) ^ ord(iv[i]) ^ ord(want[i]))</span><br><span class="line">newiv = first_16</span><br><span class="line"><span class="keyword">print</span> newiv.encode(<span class="string">'hex'</span>)</span><br></pre></td></tr></table></figure>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://www.lybsec.top">kubo</a>
+            <p>原文链接：<a href="http://www.lybsec.top/2018/12/06/BC字节翻转攻击原理/">http://www.lybsec.top/2018/12/06/BC字节翻转攻击原理/</a>
+            <p>发表日期：<a href="http://www.lybsec.top/2018/12/06/BC字节翻转攻击原理/">December 6th 2018, 4:51:04 pm</a>
+            <p>更新日期：<a href="http://www.lybsec.top/2018/12/06/BC字节翻转攻击原理/">December 6th 2018, 4:55:55 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/12/05/python学习/" title= "python学习">
+                    <div class="prevTitle">python学习</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:2434654979@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/kubosec" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#CBC翻转攻击原理"><span class="toc-number">1.</span> <span class="toc-text">CBC翻转攻击原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CBC模式"><span class="toc-number">1.1.</span> <span class="toc-text">CBC模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#攻击方式"><span class="toc-number">1.2.</span> <span class="toc-text">攻击方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码测试"><span class="toc-number">1.3.</span> <span class="toc-text">代码测试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Padding-Oracle-Attack"><span class="toc-number">1.4.</span> <span class="toc-text">Padding Oracle Attack</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#padding"><span class="toc-number">1.4.1.</span> <span class="toc-text">padding</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#攻击原理"><span class="toc-number">1.4.2.</span> <span class="toc-text">攻击原理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#代码模拟"><span class="toc-number">1.4.3.</span> <span class="toc-text">代码模拟</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#例题"><span class="toc-number">1.5.</span> <span class="toc-text">例题</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 25
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/06</span><a class="archive-post-title" href= "/2018/12/06/BC字节翻转攻击原理/" >CBC字节翻转攻击原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/05</span><a class="archive-post-title" href= "/2018/12/05/python学习/" >python学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/20</span><a class="archive-post-title" href= "/2018/11/20/湖湘杯wp/" >湖湘杯wp</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/海CTF（持续更新）/" >上海CTF（持续更新）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/件格式（png、zip持续更新）/" >文件格式（png、zip持续更新）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span><a class="archive-post-title" href= "/2018/11/04/安恒十月月赛/" >安恒十月月赛</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/28</span><a class="archive-post-title" href= "/2018/10/28/恒一周年-一道杂项题/" >安恒一周年-杂项题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/-课程设计/" >C#课程设计</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/何在渗透测试中划水/" >如何在渗透测试中划水</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/25</span><a class="archive-post-title" href= "/2018/10/25/iscc信阳杯-一切的根源32/" >iscc信阳杯-一切的根源32</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/17</span><a class="archive-post-title" href= "/2018/10/17/思/" >反思</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/7月月赛/" >安恒7月月赛</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/arvisoj-web/" >jarvisoj-web</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/ve-2018-14421-seacms漏洞/" >cve-2018-14421_seacms漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/安恒9月月赛/" >安恒9月月赛</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/TFd环境搭建/" >CTFd环境搭建</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/一次内网渗透过程/" >一次渗透测试过程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2018/09/20/我认识/" >自我认识</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/16</span><a class="archive-post-title" href= "/2018/09/16/鼎杯fakebook/" >网鼎杯fakebook</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/thinkphp代码审计/" >thinkphp代码审计</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/sql-bypass-1/" >sql-bypass</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/wireshark简单过滤规则/" >wireshark简单过滤规则</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/12</span><a class="archive-post-title" href= "/2018/09/12/linux入门学习/" >linux入门学习</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "kubo"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

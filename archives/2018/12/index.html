@@ -346,17 +346,18 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2018/12/07/射/" >
+        <a class="abstract-title" href = "/2018/12/07/恒11/" >
             
-                <span>仿射</span>
+                <span>安恒11</span>
         </a>
         <div class="abstract-content">
-            仿射密码仿射密码是一种表单代换密码，字母表的每个字母相应的值使用一个简单的数学函数对应一个数值，再把对应数值转换成字母。
+            这次比赛由于比赛比较多，没有打安恒，但看wp发现题目出的真好，就写一下看wp的收获吧。
+webezsql题目知识点：
+一、读取文件
+数据库中使用下面语句show global variables liker &#39;%secure%&#39;查询
+返回的secure_file_priv表示mysql可读取的文件目录，即load_file可读取的文件目录。如果此项没有设置时，可读取任意文件；如果此项为空，表示不允许导入导出。
 
-加密函数：E(x) = (ax + b) (mod m)，其中 a与b互质，m是编码系统中字母的个数（通常都是26）。
-解密函数：D(x) =  (x - b) (mod m)，其中  是 a 在Zm群的乘法逆元。
-其中乘法逆元求解脚本如下：
-123456789def get_(a, b):	if b == 0:		return 1, 0	else:		k = a // b		remainder = a % b				x1, y1 = get_(b, remaind...
+使用select load_file(&#39;配置文件&#39;) like &#39;xxx%&#39;读取文件，根据返回的0或1判断文件中的数据，其中%为通...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -868,20 +869,6 @@ py -3 -m pip install xxx
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 26
@@ -900,7 +887,7 @@ py -3 -m pip install xxx
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">12/07</span><a class="archive-post-title" href= "/2018/12/07/射/" >仿射</a>
+            <span class="archive-post-date">12/07</span><a class="archive-post-title" href= "/2018/12/07/恒11/" >安恒11</a>
         </li>
     
     
@@ -965,7 +952,7 @@ py -3 -m pip install xxx
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/7月月赛/" >安恒7月月赛</a>
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/arvisoj-web/" >jarvisoj-web</a>
         </li>
     
     
@@ -975,7 +962,12 @@ py -3 -m pip install xxx
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/arvisoj-web/" >jarvisoj-web</a>
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/7月月赛/" >安恒7月月赛</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/安恒9月月赛/" >安恒9月月赛</a>
         </li>
     
     
@@ -990,17 +982,17 @@ py -3 -m pip install xxx
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/安恒9月月赛/" >安恒9月月赛</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
             <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2018/09/20/我认识/" >自我认识</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">09/16</span><a class="archive-post-title" href= "/2018/09/16/鼎杯fakebook/" >网鼎杯fakebook</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/thinkphp代码审计/" >thinkphp代码审计</a>
         </li>
     
     
@@ -1016,11 +1008,6 @@ py -3 -m pip install xxx
     
         <li class="archive-post-item">
             <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/wireshark简单过滤规则/" >wireshark简单过滤规则</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/thinkphp代码审计/" >thinkphp代码审计</a>
         </li>
     
     

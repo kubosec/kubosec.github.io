@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="kubo">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="kubo">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>docker学习 · kubo&#39;s blog.</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/favicon.ico" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >kubo&#39;s blog.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">docker学习</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>kubo's blog.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            docker学习
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.2k</span>阅读时长: <span class="post-count reading-time">8 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/01/12</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h2 id="docker-学习"><a href="#docker-学习" class="headerlink" title="docker 学习"></a>docker 学习</h2><h3 id="docker-概述"><a href="#docker-概述" class="headerlink" title="docker 概述"></a>docker 概述</h3><h4 id="docker简介"><a href="#docker简介" class="headerlink" title="docker简介"></a>docker简介</h4><p>Docker 是一个开源的应用容器引擎，基于 <a href="http://www.runoob.com/go/go-tutorial.html" target="_blank" rel="noopener">Go 语言</a> 并遵从Apache2.0协议开源。</p>
+<p>Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。</p>
+<p>容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开销极低。</p>
+<h4 id="docker架构"><a href="#docker架构" class="headerlink" title="docker架构"></a>docker架构</h4><p>Docker 使用客户端-服务器 (C/S) 架构模式，使用远程API来管理和创建Docker容器。</p>
+<p>Docker 容器通过 Docker 镜像来创建。</p>
+<p>容器与镜像的关系类似于面向对象编程中的对象与类。</p>
+<h4 id="ubuntu-docker安装"><a href="#ubuntu-docker安装" class="headerlink" title="ubuntu docker安装"></a>ubuntu docker安装</h4><p><strong>前提条件</strong></p>
+<p>ubuntu系统的内核版本要高于3.10，通过uname -r命令查看内核版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
+<p><strong>使用脚本安装docker</strong></p>
+<p>1、获取最新版本的docker安装包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -qO- https://get.docker.com/ | sh</span><br></pre></td></tr></table></figure>
+<p>如果要以非root用户可以直接运行docker时，需执行sudo usermod -aG docker runoob命令，然后重新登录，否则会报错</p>
+<p>2、启动docker后台服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service docker start</span><br></pre></td></tr></table></figure>
+<p>3、测试运行hello-world</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>镜像加速</strong></p>
+</li>
+</ul>
+<p>鉴于国内网络问题，后续拉取 Docker 镜像十分缓慢，我们可以需要配置加速器来解决，我使用的是网易的镜像地址：<a href="http://hub-mirror.c.163.com。" target="_blank" rel="noopener">http://hub-mirror.c.163.com。</a></p>
+<p>新版的 Docker 使用 /etc/docker/daemon.json（Linux） 或者 %programdata%\docker\config\daemon.json（Windows） 来配置 Daemon。</p>
+<p>请在该配置文件中加入（没有该文件的话，请先建一个）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;http://hub-mirror.c.163.com&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="docker-使用"><a href="#docker-使用" class="headerlink" title="docker 使用"></a>docker 使用</h3><h4 id="docker-hello-world"><a href="#docker-hello-world" class="headerlink" title="docker hello world"></a>docker hello world</h4><p>使用docker run命令在容器内运行一个应用程序，输出hello world</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run ubuntu:16.04 /bin/echo &quot;hello world&quot;</span><br></pre></td></tr></table></figure>
+<p>参数解析：</p>
+<blockquote>
+<p>docker：docker的二进制可执行文件</p>
+<p>run：与前面的docker组合来运行一个容器</p>
+<p>ubuntu:16.04 指定要运行的镜像，docker首先从本地主机上查找镜像是否存在，如果不存在，docker就会从镜像仓库Docker Hub下载公共镜像</p>
+<p>/bin/echo “hello world”：在启动的容器中执行的命令</p>
+</blockquote>
+<h4 id="运行交互式容器"><a href="#运行交互式容器" class="headerlink" title="运行交互式容器"></a>运行交互式容器</h4><p>使用docker的-i -t参数，让docker运行的容器实现“对话”能力</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -i -t ubuntu:16.04 /bin/bash</span><br></pre></td></tr></table></figure>
+<p>参数解析：</p>
+<blockquote>
+<p>-t：在新容器内执行一个伪终端或终端</p>
+<p>-i：允许你对容器内的标准输入（STDIN）进行交互</p>
+</blockquote>
+<p>可以使用cat /proc/version和ls分别查看当前系统的版本信息和当前目录下的文件列表</p>
+<p>使用exit或CTRL+D退出容器</p>
+<h4 id="启动容器（后台模式）"><a href="#启动容器（后台模式）" class="headerlink" title="启动容器（后台模式）"></a>启动容器（后台模式）</h4><p>使用以下命令创建一个以进程方式运行的容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d ubuntu:16.04 /bin/sh -c &quot;while true;do echo hello world;sleep 1;done&quot;</span><br></pre></td></tr></table></figure>
+<p>在输出中，没有“hello world”，而是一长串字符</p>
+<p>3262b22a8b475a11dcb5c191d5ce0c3f776795b49758e733aa6e579eaa2eec49</p>
+<p>这个长字符串叫容器ID，对每个容器来说都是唯一的，可以通过容器ID查看对应的容器发上了什么</p>
+<p>使用docker ps查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>CONTAINER ID：容器ID</p>
+<p>NAMES：自动分配的容器名称</p>
+</blockquote>
+<p>使用docker logs，查看容器内的标准输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs 3262b22a8b47</span><br></pre></td></tr></table></figure>
+<p>或使用容器分配的别名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs priceless_beaver</span><br></pre></td></tr></table></figure>
+<h4 id="停止容器"><a href="#停止容器" class="headerlink" title="停止容器"></a>停止容器</h4><p>使用docker stop停止容器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop 3262b22a8b47</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop priceless_beaver</span><br></pre></td></tr></table></figure>
+<h3 id="docker-容器使用"><a href="#docker-容器使用" class="headerlink" title="docker 容器使用"></a>docker 容器使用</h3><h4 id="docker-客户端"><a href="#docker-客户端" class="headerlink" title="docker 客户端"></a>docker 客户端</h4><p>可以直接输入docker查看docker客户端的所有命令选项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker</span><br></pre></td></tr></table></figure>
+<p>可以通过docker commend –help更深入了解指定docker命令使用方法</p>
+<p>例如查看docker stats指令的具体使用方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stats --help</span><br></pre></td></tr></table></figure>
+<h4 id="运行一个web应用"><a href="#运行一个web应用" class="headerlink" title="运行一个web应用"></a>运行一个web应用</h4><p>在docker容器中运行一个Python Flask应用来运行一个web应用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pull training/webapp #载入镜像</span><br><span class="line">docker run -d -P training/webapp python app.py</span><br></pre></td></tr></table></figure>
+<p>参数说明：</p>
+<blockquote>
+<p>-d：让容器在后台运行</p>
+<p>-P：将容器内部使用的网络端口映射到我们使用的主机上</p>
+</blockquote>
+<h4 id="查看Web应用容器"><a href="#查看Web应用容器" class="headerlink" title="查看Web应用容器"></a>查看Web应用容器</h4><p>使用docker ps查看正在运行的容器会发现多了端口信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PORTS</span><br><span class="line">0.0.0.0:32769-&gt;5000/tcp</span><br></pre></td></tr></table></figure>
+<p>docker开放了5000端口（默认Python Flask端口）映射到主机端口32769上</p>
+<p>可以通过浏览器211.69.16.145:32769访问Web应用</p>
+<p>也可以通过-p参数来设置不一样的端口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9000:5000 training/webapp python app.py</span><br></pre></td></tr></table></figure>
+<p>容器内部的5000端口映射到本地主机的9000端口上</p>
+<h4 id="网络端口的快捷方式"><a href="#网络端口的快捷方式" class="headerlink" title="网络端口的快捷方式"></a>网络端口的快捷方式</h4><p>使用docker port 3262b22a8b47或 docker port priceless_beaver查看容器端口的映射情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker port 3262b22a8b47</span><br><span class="line"></span><br><span class="line">docker port priceless_beaver</span><br></pre></td></tr></table></figure>
+<h4 id="查看Web应用程序日志"><a href="#查看Web应用程序日志" class="headerlink" title="查看Web应用程序日志"></a>查看Web应用程序日志</h4><p>docker logs [ID或者名字]可以查看容器内部的标准输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs -f 3262b22a8b47</span><br></pre></td></tr></table></figure>
+<p>参数解析：</p>
+<blockquote>
+<p>-f：让docker logs像使用tail -f一样来输出容器内部的标准输出</p>
+</blockquote>
+<h4 id="重命名docker"><a href="#重命名docker" class="headerlink" title="重命名docker"></a>重命名docker</h4><p>使用 docker rename 命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rename 3aa3f2225653 test</span><br></pre></td></tr></table></figure>
+<h4 id="停止、重启、移除Web应用程序"><a href="#停止、重启、移除Web应用程序" class="headerlink" title="停止、重启、移除Web应用程序"></a>停止、重启、移除Web应用程序</h4><p>使用docker start启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start priceless_beaver</span><br></pre></td></tr></table></figure>
+<p>使用docker stop停止</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop priceless_beaver</span><br></pre></td></tr></table></figure>
+<p>使用docker rm删除不需要的容器，需注意删除时，容器必须是停止状态，否则会报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm priceless_beaver</span><br></pre></td></tr></table></figure>
+<h3 id="docker镜像的使用"><a href="#docker镜像的使用" class="headerlink" title="docker镜像的使用"></a>docker镜像的使用</h3><p>当运行容器时，使用的镜像如果在本地中不存在，docker就会自动从docker镜像仓库中下载，默认是从Docker Hub公共镜像源下载</p>
+<h4 id="列出镜像列表"><a href="#列出镜像列表" class="headerlink" title="列出镜像列表"></a>列出镜像列表</h4><p>使用docker images列出本地主机上的镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+<p>选项说明：</p>
+<blockquote>
+<p>REPOSITORY：表示镜像的仓库源</p>
+<p>TAG：镜像的标签</p>
+<p>IMAGE ID：镜像ID</p>
+<p>CREATED：镜像创建时间</p>
+<p>SIZE：镜像大小</p>
+</blockquote>
+<p>同一仓库源可以有多个TAG，代表这个仓库源的不同个版本，如ubuntu仓库源里，有15.10、14.04等多个不同的版本，可以使用REPOSITORY:TAG定义不同的镜像</p>
+<p>例如，如果要使用版本为15.10的ubuntu系统镜像来运行容器时，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -t -i ubuntu:15.10 /bin/bash</span><br></pre></td></tr></table></figure>
+<p>如果要使用版本为11.04的ubuntu系统镜像来运行容器时，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -t -i ubuntu:15.10 /bin/bash</span><br></pre></td></tr></table></figure>
+<p>如果不指定镜像的版本标签，例如只使用ubuntu，docker将默认使用ubuntu:latest镜像</p>
+<h4 id="获取一个新的镜像"><a href="#获取一个新的镜像" class="headerlink" title="获取一个新的镜像"></a>获取一个新的镜像</h4><p>当在本地主机上使用一个不存在的镜像时docker就会自动下载这个镜像，如果想预先下载这个镜像，可以使用docker pull下载它</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull ubuntu:13.10</span><br></pre></td></tr></table></figure>
+<h4 id="查找镜像"><a href="#查找镜像" class="headerlink" title="查找镜像"></a>查找镜像</h4><p>可以从Docker Hub网站来搜索镜像，Docker Hub网址为<em><a href="https://hub.docker.com/" target="_blank" rel="noopener">https://hub.docker.com/</a></em> </p>
+<p>也可以使用docker search命令搜索镜像，比如需要一个httpd的镜像作为web服务，可以通过docker search命令搜索httpd寻找</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search httpd</span><br></pre></td></tr></table></figure>
+<p>选项说明：</p>
+<blockquote>
+<p>NAME：镜像仓库源名称</p>
+<p>DESCRIPTION：镜像的描述</p>
+<p>OFFICIAL：是否docker官方发布</p>
+</blockquote>
+<h4 id="拖取镜像"><a href="#拖取镜像" class="headerlink" title="拖取镜像"></a>拖取镜像</h4><p>使用docker pull下载镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull httpd</span><br></pre></td></tr></table></figure>
+<p>之后就可以使用了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run httpd</span><br></pre></td></tr></table></figure>
+<h4 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h4><p>当从docker镜像仓库中下载的镜像不能满足我们的需求时，可以通过以下两种方式对镜像进行更改</p>
+<blockquote>
+<p>1、从已经创建的容器中更新镜像，病提交这个镜像</p>
+<p>2、使用Dockerfile指令创建一个新的镜像</p>
+</blockquote>
+<h4 id="更新镜像"><a href="#更新镜像" class="headerlink" title="更新镜像"></a>更新镜像</h4><p>更新镜像之前，我们需要使用镜像来创建一个容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -t -i ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+<p>在运行的容器内使用apt-get update命令进行更新，在完成操作之后，输入exit命令退出容器，此时ID为6905cd369dfb的容器，是按照需求更改的容器。可以通过命令docker commit来提交容器副本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit -m=&quot;has update&quot; -a=&quot;kubo&quot; 6905cd369dfb kubo/ubuntu</span><br></pre></td></tr></table></figure>
+<p>参数说明：</p>
+<blockquote>
+<p>-m：提交的描述信息</p>
+<p>-a：指定镜像作者</p>
+<p>6905cd369dfb：容器ID</p>
+<p>kubo/ubuntu：指定要创建的目标镜像名</p>
+</blockquote>
+<p>可以使用docker images命令查看新镜像kubo/ubuntu</p>
+<h4 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h4><p>使用docker build，从零开始创建一个新的镜像。首先，需要创建Dockerfile文件，其中一组指令来告诉docker如何构建镜像。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cat Dockerfile</span><br><span class="line"></span><br><span class="line">FROM    centos:6.7</span><br><span class="line">MAINTAINER      Fisher &quot;fisher@sudops.com&quot;</span><br><span class="line"></span><br><span class="line">RUN     /bin/echo &apos;root:123456&apos; | chpasswd</span><br><span class="line">RUN     useradd runoob</span><br><span class="line">RUN     /bin/echo &apos;runoob:123456&apos; | chpasswd</span><br><span class="line">RUN     /bin/echo -e &quot;LANG=\&quot;en_US.UTF-8\&quot;&quot; &gt;/etc/default/local</span><br><span class="line">EXPOSE  22</span><br><span class="line">EXPOSE  80</span><br><span class="line">CMD     /usr/sbin/sshd -D</span><br></pre></td></tr></table></figure>
+<p>每个指令都会在镜像上创建一个新的层，每个指令的前缀都必须是大写的。</p>
+<p>每条FROM，指定使用哪些镜像源</p>
+<p>RUN指令告诉docker在镜像内执行命令，安装了什么</p>
+<p>之后，使用Dockerfile文件，通过docker build命令构建镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t runoob/centos:6.7 .</span><br></pre></td></tr></table></figure>
+<p>参数说明：</p>
+<blockquote>
+<p>-t：指定要创建的目标镜像名</p>
+<p>.：Dockerfile文件所在目录，可以指定Dockerfile的绝对路径</p>
+</blockquote>
+<p>使用docker images即可查看构建的镜像。</p>
+
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://www.lybsec.top">kubo</a>
+            <p>原文链接：<a href="http://www.lybsec.top/2019/01/12/docker学习/">http://www.lybsec.top/2019/01/12/docker学习/</a>
+            <p>发表日期：<a href="http://www.lybsec.top/2019/01/12/docker学习/">January 12th 2019, 5:00:39 pm</a>
+            <p>更新日期：<a href="http://www.lybsec.top/2019/01/12/docker学习/">January 12th 2019, 5:00:48 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2018/12/20/avaWeb复习/" title= "JavaWeb复习">
+                    <div class="prevTitle">JavaWeb复习</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:2434654979@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/kubosec" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker-学习"><span class="toc-number">1.</span> <span class="toc-text">docker 学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-概述"><span class="toc-number">1.1.</span> <span class="toc-text">docker 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#docker简介"><span class="toc-number">1.1.1.</span> <span class="toc-text">docker简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker架构"><span class="toc-number">1.1.2.</span> <span class="toc-text">docker架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ubuntu-docker安装"><span class="toc-number">1.1.3.</span> <span class="toc-text">ubuntu docker安装</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-使用"><span class="toc-number">1.2.</span> <span class="toc-text">docker 使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-hello-world"><span class="toc-number">1.2.1.</span> <span class="toc-text">docker hello world</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#运行交互式容器"><span class="toc-number">1.2.2.</span> <span class="toc-text">运行交互式容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#启动容器（后台模式）"><span class="toc-number">1.2.3.</span> <span class="toc-text">启动容器（后台模式）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#停止容器"><span class="toc-number">1.2.4.</span> <span class="toc-text">停止容器</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-容器使用"><span class="toc-number">1.3.</span> <span class="toc-text">docker 容器使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-客户端"><span class="toc-number">1.3.1.</span> <span class="toc-text">docker 客户端</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#运行一个web应用"><span class="toc-number">1.3.2.</span> <span class="toc-text">运行一个web应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查看Web应用容器"><span class="toc-number">1.3.3.</span> <span class="toc-text">查看Web应用容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#网络端口的快捷方式"><span class="toc-number">1.3.4.</span> <span class="toc-text">网络端口的快捷方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查看Web应用程序日志"><span class="toc-number">1.3.5.</span> <span class="toc-text">查看Web应用程序日志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#重命名docker"><span class="toc-number">1.3.6.</span> <span class="toc-text">重命名docker</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#停止、重启、移除Web应用程序"><span class="toc-number">1.3.7.</span> <span class="toc-text">停止、重启、移除Web应用程序</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker镜像的使用"><span class="toc-number">1.4.</span> <span class="toc-text">docker镜像的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#列出镜像列表"><span class="toc-number">1.4.1.</span> <span class="toc-text">列出镜像列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#获取一个新的镜像"><span class="toc-number">1.4.2.</span> <span class="toc-text">获取一个新的镜像</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#查找镜像"><span class="toc-number">1.4.3.</span> <span class="toc-text">查找镜像</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#拖取镜像"><span class="toc-number">1.4.4.</span> <span class="toc-text">拖取镜像</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建镜像"><span class="toc-number">1.4.5.</span> <span class="toc-text">创建镜像</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#更新镜像"><span class="toc-number">1.4.6.</span> <span class="toc-text">更新镜像</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#构建镜像"><span class="toc-number">1.4.7.</span> <span class="toc-text">构建镜像</span></a></li></ol></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 28
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/12</span><a class="archive-post-title" href= "/2019/01/12/docker学习/" >docker学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/20</span><a class="archive-post-title" href= "/2018/12/20/avaWeb复习/" >JavaWeb复习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/07</span><a class="archive-post-title" href= "/2018/12/07/恒11/" >安恒11</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/06</span><a class="archive-post-title" href= "/2018/12/06/BC字节翻转攻击原理/" >CBC字节翻转攻击原理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/05</span><a class="archive-post-title" href= "/2018/12/05/python学习/" >python学习</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/20</span><a class="archive-post-title" href= "/2018/11/20/湖湘杯wp/" >湖湘杯wp</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/件格式（png、zip持续更新）/" >文件格式（png、zip持续更新）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/海CTF（持续更新）/" >上海CTF（持续更新）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span><a class="archive-post-title" href= "/2018/11/04/安恒十月月赛/" >安恒十月月赛</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/28</span><a class="archive-post-title" href= "/2018/10/28/恒一周年-一道杂项题/" >安恒一周年-杂项题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/-课程设计/" >C#课程设计</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/26</span><a class="archive-post-title" href= "/2018/10/26/何在渗透测试中划水/" >如何在渗透测试中划水</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/25</span><a class="archive-post-title" href= "/2018/10/25/iscc信阳杯-一切的根源32/" >iscc信阳杯-一切的根源32</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/17</span><a class="archive-post-title" href= "/2018/10/17/思/" >反思</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/arvisoj-web/" >jarvisoj-web</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/7月月赛/" >安恒7月月赛</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/ve-2018-14421-seacms漏洞/" >cve-2018-14421_seacms漏洞</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/安恒9月月赛/" >安恒9月月赛</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/TFd环境搭建/" >CTFd环境搭建</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/一次内网渗透过程/" >一次渗透测试过程</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2018/09/20/我认识/" >自我认识</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/16</span><a class="archive-post-title" href= "/2018/09/16/鼎杯fakebook/" >网鼎杯fakebook</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/wireshark简单过滤规则/" >wireshark简单过滤规则</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/thinkphp代码审计/" >thinkphp代码审计</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/sql-bypass-1/" >sql-bypass</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/12</span><a class="archive-post-title" href= "/2018/09/12/linux入门学习/" >linux入门学习</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "kubo"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

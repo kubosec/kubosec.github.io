@@ -359,6 +359,40 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2018/10/28/恒一周年-一道杂项题/" >
+            
+                <span>安恒一周年-杂项题</span>
+        </a>
+        <div class="abstract-content">
+            misc1下载是png图片
+
+总感觉以前做过，但就是想不起来什么时间，那就再做一遍吧。
+看到图片，先binwalk一下没有东西，又是png就想到用stegsolve分析，在Red 0、Green 0、Blue 0三个色道中均发现如下
+
+这就明确了
+
+看到png，提取出来修改文件头，得到二维码的一半，在使用tweakpng修改图片大小，发现是反相后的二维码扫不出任何东西，使用ps把黑白颜色反相，得到正确的二维码
+
+扫码得到flag.rar，压缩包中只有flag.txt，但txt中却只有这些内容，试着看是否文档中的数据隐藏了，但没发现什么，mmp。
+
+回过头看flag.rar,发现压缩包76...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/10/28</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2018/10/26/-课程设计/" >
             
                 <span>C#课程设计</span>
@@ -627,36 +661,6 @@ http过滤，在最后看到一个kiss.png图片
 测试成功了两个注入点。唔
 注入点如下：
 http://xxxx.com/siteserver/CMS/console_tablemetada...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/09/23</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/09/23/TFd环境搭建/" >
-            
-                <span>CTFd环境搭建</span>
-        </a>
-        <div class="abstract-content">
-            一次搭建CTFd的入坑经历1搭建CTFd环境时真是入了坑了，在阿里云服务器上搞了两三天，各种环境基本上试了一遍，却都死在了最后一步上。在所有东西都搞好之后，执行最后一个命令
-1gunicorn --bind 0.0.0.0:4000 -w 1 &quot;CTFd:create_app()&quot;
-就会出现这样（端口也开了），百度、google也没得到解决方法。好气、、、
-
-最后，仔细一想：是不是我本地环境就没搭好？于是，给服务器安装桌面版查看127.0.0.1是否成功。最后结果是这样的
-
-我心中一万个mmp奔腾而过。。。
-1最后还是在同学的帮助下，在虚拟机中用ubuntu16.4，...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -1215,9 +1219,54 @@ http://xxxx.com/siteserver/CMS/console_tablemetada...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 27
+        Total : 28
         </div>
         <!-- search  -->
         
@@ -1227,6 +1276,20 @@ http://xxxx.com/siteserver/CMS/console_tablemetada...
     
     
     
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/12</span><a class="archive-post-title" href= "/2019/01/12/docker学习/" >docker学习</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
@@ -1263,12 +1326,12 @@ http://xxxx.com/siteserver/CMS/console_tablemetada...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/海CTF（持续更新）/" >上海CTF（持续更新）</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/海CTF（持续更新）/" >上海CTF（持续更新）</a>
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
         </li>
     
     
@@ -1303,17 +1366,17 @@ http://xxxx.com/siteserver/CMS/console_tablemetada...
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/arvisoj-web/" >jarvisoj-web</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/7月月赛/" >安恒7月月赛</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/ve-2018-14421-seacms漏洞/" >cve-2018-14421_seacms漏洞</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/arvisoj-web/" >jarvisoj-web</a>
         </li>
     
     

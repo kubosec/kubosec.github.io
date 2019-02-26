@@ -359,6 +359,42 @@ height:50vh;
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2018/11/04/安恒十月月赛/" >
+            
+                <span>安恒十月月赛</span>
+        </a>
+        <div class="abstract-content">
+            赛后看了一下题目，很有趣。
+MISC未知流量得到两个无后缀名的文件，放进winhex查看，显示wireshark字样，用wireshark打开
+在第二个文件中发现大量USBMS数据，找到最大的数据包
+
+显示分组字节，看到CLIENT_RANDOM字样，另存为ssl.log
+打开第一个文件，过滤ssl，找到一个TLS数据包，添加解密文件ssl.log
+
+可以看到多了几个解密后的http流量，在其中发现flag
+just do it打开看到两个文件
+
+winhex打开example发现文件头：03F30D0A是pyc类型，使用工具反编译
+
+得到py脚本
+1234567891011121314...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/11/04</span>
+            </div>
+            <!-- tags  -->
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2018/10/28/恒一周年-一道杂项题/" >
             
                 <span>安恒一周年-杂项题</span>
@@ -627,40 +663,6 @@ http过滤，在最后看到一个kiss.png图片
 
 解码得 flag{Oz_4nd_Hir0_lov3_For3ver}未完待续、、、
 
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/09/23</span>
-            </div>
-            <!-- tags  -->
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/09/23/一次内网渗透过程/" >
-            
-                <span>一次渗透测试过程</span>
-        </a>
-        <div class="abstract-content">
-            1此次渗透缘由可以说是很扯了，总而言之就是又闲着没事干了、、、
-网站首页是这样的
-
-好像是一个CMS 好眼熟的CMS。唔。原来是siteserver  ，不知道对方有没有改后台路径，去网站百度了一下后台路径，
-1/siteserver/login.aspx
-神奇的是网站路径是可以进入的唔
-
-唔，竟然是3.6.4  这个版本的漏洞很多哦。随便测试一下吧，发现管理员设置了那个改密码的东西。那么测试一下其他的漏洞吧
-随便找一下都是一大把的漏洞。测试一下吧
-测试成功了两个注入点。唔
-注入点如下：
-http://xxxx.com/siteserver/CMS/console_tablemetada...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -1254,9 +1256,18 @@ http://xxxx.com/siteserver/CMS/console_tablemetada...
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 28
+        Total : 29
         </div>
         <!-- search  -->
         
@@ -1269,6 +1280,11 @@ http://xxxx.com/siteserver/CMS/console_tablemetada...
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/26</span><a class="archive-post-title" href= "/2019/02/26/无需信用卡免费撸谷歌云300刀/" >无需信用卡免费撸谷歌云300刀</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1311,7 +1327,7 @@ http://xxxx.com/siteserver/CMS/console_tablemetada...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/件格式（png、zip持续更新）/" >文件格式（png、zip持续更新）</a>
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
         </li>
     
     
@@ -1321,7 +1337,7 @@ http://xxxx.com/siteserver/CMS/console_tablemetada...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/CTF-持续更新/" >HCTF(持续更新)</a>
+            <span class="archive-post-date">11/19</span><a class="archive-post-title" href= "/2018/11/19/件格式（png、zip持续更新）/" >文件格式（png、zip持续更新）</a>
         </li>
     
     
@@ -1356,7 +1372,7 @@ http://xxxx.com/siteserver/CMS/console_tablemetada...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/7月月赛/" >安恒7月月赛</a>
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/ve-2018-14421-seacms漏洞/" >cve-2018-14421_seacms漏洞</a>
         </li>
     
     
@@ -1366,12 +1382,12 @@ http://xxxx.com/siteserver/CMS/console_tablemetada...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/ve-2018-14421-seacms漏洞/" >cve-2018-14421_seacms漏洞</a>
+            <span class="archive-post-date">10/14</span><a class="archive-post-title" href= "/2018/10/14/7月月赛/" >安恒7月月赛</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/TFd环境搭建/" >CTFd环境搭建</a>
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/一次内网渗透过程/" >一次渗透测试过程</a>
         </li>
     
     
@@ -1381,7 +1397,7 @@ http://xxxx.com/siteserver/CMS/console_tablemetada...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/一次内网渗透过程/" >一次渗透测试过程</a>
+            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/2018/09/23/TFd环境搭建/" >CTFd环境搭建</a>
         </li>
     
     
@@ -1401,17 +1417,17 @@ http://xxxx.com/siteserver/CMS/console_tablemetada...
     
     
         <li class="archive-post-item">
+            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
             <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/sql-bypass-1/" >sql-bypass</a>
         </li>
     
     
         <li class="archive-post-item">
             <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/thinkphp代码审计/" >thinkphp代码审计</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/2018/09/15/学习飘零大佬的流量分析1/" >学习飘零大佬的流量分析1</a>
         </li>
     
     
